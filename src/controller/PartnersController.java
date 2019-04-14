@@ -43,6 +43,8 @@ public class PartnersController {
 
     public Club club;
 
+    public Stage primaryStage;
+
     public void initialize(){
 
         TableColumn<Partner, String> columnId= new TableColumn<>("Cédula");
@@ -62,10 +64,11 @@ public class PartnersController {
 
         TableColumn<Partner, String> columnInvoices = new TableColumn<>("Facturas");
         columnInvoices.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getAuthorizedSize())));
-        columnInvoices.prefWidthProperty().bind(partnersTable.widthProperty().multiply(0.147));
+        columnInvoices.prefWidthProperty().bind(partnersTable.widthProperty().multiply(0.15));
         columnInvoices.setStyle("-fx-alignment: CENTER;");
 
         partnersTable.getColumns().addAll(columnId,columnName, columnAuthorized,columnInvoices);
+        partnersTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
 
     }
@@ -92,11 +95,31 @@ public class PartnersController {
         JOptionPane.showMessageDialog(null, club.toString());
     }
 
+    public void handleAuthorizedMenu() throws Exception{
+        URL url = getClass().getClassLoader().getResource("resources/views/Authorized.fxml");
+        FXMLLoader fxmlLoader = new FXMLLoader(url);
+        Parent parent = fxmlLoader.load();
+        AuthorizedController authorizedController = fxmlLoader.getController();
+        authorizedController.setClub(club);
+        authorizedController.setPrimaryStage(primaryStage);
+        primaryStage.setScene(new Scene(parent));
+        parent.requestFocus();
+    }
+
+    public void handleRemoveFocus(){
+        Parent parent = partnersTable.getParent();
+        parent.requestFocus();
+    }
+
     public TableView<Partner> getPartnersTable() {
         return partnersTable;
     }
 
     public void setClub(Club club) {
         this.club = club;
+    }
+
+    public void setPrimaryStage(Stage primaryStage) {
+        this.primaryStage = primaryStage;
     }
 }

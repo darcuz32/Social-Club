@@ -1,6 +1,7 @@
 package controller;
 
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -64,7 +65,6 @@ public class AffiliatePartnerController {
             partnersController.getPartnersTable().getItems().add(thisPartner);
         }
 
-
         ((Stage) txtName.getScene().getWindow()).close();
     }
 
@@ -75,6 +75,12 @@ public class AffiliatePartnerController {
     public void handleReleasedId(){
         txtId.setStyle("");
     }
+
+    public void handleRemoveFocus(){
+        Parent parent = txtId.getParent();
+        parent.requestFocus();
+    }
+
 
     public void setPartnersController(PartnersController partnersController) {
         this.partnersController = partnersController;

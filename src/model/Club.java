@@ -21,6 +21,16 @@ public class Club {
         return  partner;
     }
 
+    public Club searchPartner(String txtToSearch) {
+        Club clubToSearch = new Club();
+        for (Partner thisPartner: this.partners) {
+            if (thisPartner.getName().matches(".*"+txtToSearch+".*") || thisPartner.getId().matches(".*"+txtToSearch+".*")){
+               clubToSearch.addPartner(thisPartner.getId(), thisPartner.getName());
+            }
+        }
+        return  clubToSearch;
+    }
+
     public void affiliatePartner(String id, String name)throws Exception{
         Partner partner = validatePartner(id);
         if (partner == null) {
@@ -29,6 +39,11 @@ public class Club {
         }else{
             throw new Exception("El socio ya existe.");
         }
+    }
+
+    public void addPartner(String id, String name){
+        Partner newPartner = new Partner(id,name);
+        partners.add(newPartner);
     }
 
     public ArrayList<Partner> getPartners() {

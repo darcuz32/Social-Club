@@ -22,8 +22,10 @@ public class Main extends Application {
         PartnersController partnersController = fxmlLoader.getController();
         Club club = new Club();
         partnersController.setClub(club);
+        partnersController.setPrimaryStage(primaryStage);
         primaryStage.setTitle("Club social");
         primaryStage.setScene(new Scene(parent));
+        parent.requestFocus();
         primaryStage.show();
     }
 }
