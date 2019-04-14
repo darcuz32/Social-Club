@@ -1,6 +1,7 @@
 package controller;
 
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,6 +13,8 @@ import model.Club;
 import model.Partner;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AuthorizedController {
     @FXML
@@ -56,8 +59,8 @@ public class AuthorizedController {
         partnersAuthorizedTable.getColumns().addAll(columnId,columnName);
         partnersAuthorizedTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
-        TableColumn<String,String> columnAuthorizedName = new TableColumn<>("Nombre");
-        columnAuthorizedName.setCellValueFactory(new PropertyValueFactory<>("authorized"));
+        TableColumn<String, String> columnAuthorizedName = new TableColumn<>("Nombre");
+        columnAuthorizedName.setCellValueFactory(data -> new SimpleStringProperty(data.getValue()));
         columnAuthorizedName.prefWidthProperty().bind(authorizedTable.widthProperty().multiply(1));
         columnAuthorizedName.setStyle("-fx-alignment: CENTER;");
 
@@ -89,6 +92,11 @@ public class AuthorizedController {
         partnersController.setPrimaryStage(primaryStage);
         primaryStage.setScene(new Scene(parent));
         parent.requestFocus();
+
+        partnersController.getPartnersTable().getItems().clear();
+        for (Partner thisPartner: club.getPartners()) {
+            partnersController.getPartnersTable().getItems().add(thisPartner);
+        }
     }
 
     public void handleRemoveFocus(){
@@ -102,5 +110,13 @@ public class AuthorizedController {
 
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
+    }
+
+    public TableView<Partner> getPartnersAuthorizedTable() {
+        return partnersAuthorizedTable;
+    }
+
+    public TableView<String> getAuthorizedTable() {
+        return authorizedTable;
     }
 }

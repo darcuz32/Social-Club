@@ -103,7 +103,24 @@ public class PartnersController {
         authorizedController.setClub(club);
         authorizedController.setPrimaryStage(primaryStage);
         primaryStage.setScene(new Scene(parent));
-        parent.requestFocus();
+
+        authorizedController.getPartnersAuthorizedTable().getItems().clear();
+        for (Partner thisPartner: club.getPartners()) {
+            authorizedController.getPartnersAuthorizedTable().getItems().add(thisPartner);
+        }
+
+        authorizedController.getPartnersAuthorizedTable().getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> fillTableAuthorized(newSelection, authorizedController.getAuthorizedTable()));
+
+    }
+
+    public void fillTableAuthorized(Partner partner, TableView authorizedTable){
+        authorizedTable.getItems().clear();
+        if (partner != null){
+            for (Object thisAuthorized:partner.getAuthorized()) {
+                authorizedTable.getItems().add(String.valueOf(thisAuthorized));
+            }
+        }
+
     }
 
     public void handleRemoveFocus(){

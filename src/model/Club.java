@@ -1,6 +1,8 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Club {
 
@@ -24,7 +26,18 @@ public class Club {
     public Club searchPartner(String txtToSearch) {
         Club clubToSearch = new Club();
         for (Partner thisPartner: this.partners) {
-            if (thisPartner.getName().matches(".*"+txtToSearch+".*") || thisPartner.getId().matches(".*"+txtToSearch+".*")){
+            String patternString = ".*"+txtToSearch+".*";
+
+            Pattern pattern = Pattern.compile(patternString, Pattern.CASE_INSENSITIVE);
+            Matcher matcherName = pattern.matcher(thisPartner.getName());
+            Matcher matcherId = pattern.matcher(thisPartner.getId());
+
+
+            boolean matchesName = matcherName.matches();
+            boolean matchesId = matcherId.matches();
+
+
+            if (matchesId || matchesName){
                clubToSearch.addPartner(thisPartner.getId(), thisPartner.getName());
             }
         }

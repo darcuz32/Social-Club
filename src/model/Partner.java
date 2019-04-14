@@ -14,6 +14,7 @@ public class Partner {
         this.id = id;
         this.name = name;
         this.authorized = new ArrayList();
+        this.authorized.add("El otro men "+this.name);
         this.invoices = new ArrayList();
     }
 
