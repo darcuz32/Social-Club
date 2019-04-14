@@ -49,6 +49,10 @@ public class Partner {
         return authorized.size();
     }
 
+    public int getInvoicesSize() {
+        return invoices.size();
+    }
+
     public void setAuthorized(String authorized) {
         this.authorized.add(authorized);
     }
@@ -62,7 +66,8 @@ public class Partner {
         return "Partner{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", invoices=" + invoices.size() +
+                ", invoices=" + invoices.toString() +
+                ", invoices size=" + invoices.size() +
                 ", authorized=" + authorized.size() +
                 '}';
     }

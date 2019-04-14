@@ -61,8 +61,8 @@ public class PartnersController {
         columnAuthorized.setStyle("-fx-alignment: CENTER;");
 
         TableColumn<Partner, String> columnInvoices = new TableColumn<>("Facturas");
-        columnInvoices.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getAuthorizedSize())));
-        columnInvoices.prefWidthProperty().bind(partnersTable.widthProperty().multiply(0.147));
+        columnInvoices.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getInvoicesSize())));
+        columnInvoices.prefWidthProperty().bind(partnersTable.widthProperty().multiply(0.15));
         columnInvoices.setStyle("-fx-alignment: CENTER;");
 
         partnersTable.getColumns().addAll(columnId,columnName, columnAuthorized,columnInvoices);
