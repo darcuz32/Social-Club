@@ -13,8 +13,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import model.Club;
 import model.Partner;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -36,21 +38,34 @@ public class PartnersController {
     @FXML
     private MenuItem btnInvoicesMenu;
 
+    @FXML
+    private Button btnShow;
+
+    public Club club;
+
     public void initialize(){
 
         TableColumn<Partner, String> columnId= new TableColumn<>("Cédula");
         columnId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        columnId.prefWidthProperty().bind(partnersTable.widthProperty().divide(4));
+        columnId.prefWidthProperty().bind(partnersTable.widthProperty().multiply(0.20));
+        columnId.setStyle("-fx-alignment: CENTER;");
 
         TableColumn<Partner, String> columnName= new TableColumn<>("Nombre");
         columnName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        columnName.prefWidthProperty().bind(partnersTable.widthProperty().divide(2));
+        columnName.prefWidthProperty().bind(partnersTable.widthProperty().multiply(0.5));
+        columnName.setStyle("-fx-alignment: CENTER;");
 
         TableColumn<Partner, String> columnAuthorized = new TableColumn<>("Autorizados");
         columnAuthorized.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getAuthorizedSize())));
-        columnAuthorized.prefWidthProperty().bind(partnersTable.widthProperty().divide(4));
+        columnAuthorized.prefWidthProperty().bind(partnersTable.widthProperty().multiply(0.15));
+        columnAuthorized.setStyle("-fx-alignment: CENTER;");
 
-        partnersTable.getColumns().addAll(columnId,columnName, columnAuthorized);
+        TableColumn<Partner, String> columnInvoices = new TableColumn<>("Facturas");
+        columnInvoices.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getAuthorizedSize())));
+        columnInvoices.prefWidthProperty().bind(partnersTable.widthProperty().multiply(0.147));
+        columnInvoices.setStyle("-fx-alignment: CENTER;");
+
+        partnersTable.getColumns().addAll(columnId,columnName, columnAuthorized,columnInvoices);
 
 
     }
@@ -62,17 +77,26 @@ public class PartnersController {
             Parent parent = fxmlLoader.load();
             AffiliatePartnerController affiliatePartnerController = fxmlLoader.getController();
             affiliatePartnerController.setPartnersController(this);
+            affiliatePartnerController.setClub(club);
             Scene scene = new Scene(parent);
-            Stage dialogo = new Stage();
-            dialogo.initModality(Modality.APPLICATION_MODAL);
-            dialogo.setScene(scene);
-            dialogo.show();
+            Stage dialog = new Stage();
+            dialog.initModality(Modality.APPLICATION_MODAL);
+            dialog.setScene(scene);
+            dialog.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    public void handleShow(){
+        JOptionPane.showMessageDialog(null, club.toString());
+    }
+
     public TableView<Partner> getPartnersTable() {
         return partnersTable;
+    }
+
+    public void setClub(Club club) {
+        this.club = club;
     }
 }

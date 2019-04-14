@@ -56,4 +56,14 @@ public class Partner {
     public void addAuthorized(String nameAuthorized){
 
     }
+
+    @Override
+    public String toString() {
+        return "Partner{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", invoices=" + invoices.size() +
+                ", authorized=" + authorized.size() +
+                '}';
+    }
 }

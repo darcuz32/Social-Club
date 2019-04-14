@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="242.0" prefWidth="434.0" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AffiliatePartnerController">
    <children>
       <Label text="Afiliar socio">
@@ -29,7 +28,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="txtName" HBox.hgrow="ALWAYS">
+            <TextField fx:id="txtName" onKeyReleased="#handleReleasedName" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets right="50.0" />
                </HBox.margin>
@@ -46,7 +45,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="txtId" HBox.hgrow="ALWAYS">
+            <TextField fx:id="txtId" onKeyReleased="#handleReleasedId" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets right="50.0" />
                </HBox.margin>

@@ -4,8 +4,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import model.Club;
 import model.Partner;
 
+import javax.swing.*;
 import java.util.ArrayList;
 
 public class AffiliatePartnerController {
@@ -21,7 +23,7 @@ public class AffiliatePartnerController {
 
     private PartnersController partnersController;
 
-    public ArrayList<Partner> partners;
+    public Club club;
 
     public void initialize(){
 
@@ -31,8 +33,17 @@ public class AffiliatePartnerController {
         String name = txtName.getText();
         String id = txtId.getText();
 
-
-
+        if (name.isEmpty() && id.isEmpty()){
+            txtName.setStyle("-fx-text-box-border: red");
+            txtId.setStyle("-fx-text-box-border: red");
+            return;
+        }else if (id.isEmpty()){
+            txtId.setStyle("-fx-text-box-border: red");
+            return;
+        }else if(name.isEmpty()){
+            txtName.setStyle("-fx-text-box-border: red");
+            return;
+        }
 
         try{
             Integer.parseInt(id);
@@ -41,17 +52,35 @@ public class AffiliatePartnerController {
             return;
         }
 
+        try {
+            club.affiliatePartner(id,name);
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null,e.getMessage());
+            return;
+        }
 
-        Partner partner = new Partner(id,name);
-        partners.add(partner);
-        System.out.println(partner);
+        partnersController.getPartnersTable().getItems().clear();
+        for (Partner thisPartner: club.getPartners()) {
+            partnersController.getPartnersTable().getItems().add(thisPartner);
+        }
 
-        partnersController.getPartnersTable().getItems().add(partner);
 
         ((Stage) txtName.getScene().getWindow()).close();
     }
 
+    public void handleReleasedName(){
+        txtName.setStyle("");
+    }
+
+    public void handleReleasedId(){
+        txtId.setStyle("");
+    }
+
     public void setPartnersController(PartnersController partnersController) {
         this.partnersController = partnersController;
+    }
+
+    public void setClub(Club club) {
+        this.club = club;
     }
 }
