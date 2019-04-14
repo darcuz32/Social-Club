@@ -1,5 +1,8 @@
 #Ignore folder named 'out'
 out/
 
-#Ignore folder named '.idea'
+#Ignore folder named 'idea'
 .idea/
+
+#Ignore file named 'Club social'
+Club social.iml
