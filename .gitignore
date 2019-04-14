@@ -3,3 +3,6 @@ out/
 
 #Ignore folder named 'idea'
 .idea/
+
+#Ignore file named 'Club social'
+Club social.iml
