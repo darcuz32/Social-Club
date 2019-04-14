@@ -63,7 +63,6 @@ public class AffiliatePartnerController {
         partnersController.getPartnersTable().getItems().clear();
         for (Partner thisPartner: club.getPartners()) {
             partnersController.getPartnersTable().getItems().add(thisPartner);
-            System.out.println(thisPartner);
         }
         ((Stage) txtName.getScene().getWindow()).close();
     }

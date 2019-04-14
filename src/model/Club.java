@@ -50,9 +50,16 @@ public class Club {
             Partner newPartner = new Partner(id,name);
             partners.add(newPartner);
         }else{
-            throw new Exception("El socio ya existe.");
+            throw new Exception("El socio con esta cédula ya existe.");
         }
     }
+
+    public void checkPartner(Partner partner) throws Exception{
+        if (partner == null){
+            throw new Exception("Seleccione un socio.");
+        }
+    }
+
 
     public void addPartner(String id, String name){
         Partner newPartner = new Partner(id,name);

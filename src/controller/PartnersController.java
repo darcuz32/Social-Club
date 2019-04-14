@@ -59,12 +59,12 @@ public class PartnersController {
 
         TableColumn<Partner, String> columnAuthorized = new TableColumn<>("Autorizados");
         columnAuthorized.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getAuthorizedSize())));
-        columnAuthorized.prefWidthProperty().bind(partnersTable.widthProperty().multiply(0.15));
+        columnAuthorized.prefWidthProperty().bind(partnersTable.widthProperty().multiply(0.18));
         columnAuthorized.setStyle("-fx-alignment: CENTER;");
 
         TableColumn<Partner, String> columnInvoices = new TableColumn<>("Facturas");
         columnInvoices.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getInvoicesSize())));
-        columnInvoices.prefWidthProperty().bind(partnersTable.widthProperty().multiply(0.15));
+        columnInvoices.prefWidthProperty().bind(partnersTable.widthProperty().multiply(0.12));
         columnInvoices.setStyle("-fx-alignment: CENTER;");
 
         partnersTable.getColumns().addAll(columnId,columnName, columnAuthorized,columnInvoices);
@@ -109,15 +109,16 @@ public class PartnersController {
             authorizedController.getPartnersAuthorizedTable().getItems().add(thisPartner);
         }
 
-        authorizedController.getPartnersAuthorizedTable().getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> fillTableAuthorized(newSelection, authorizedController.getAuthorizedTable()));
+        authorizedController.getPartnersAuthorizedTable().getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> fillTableAuthorized(newSelection, authorizedController));
 
     }
 
-    public void fillTableAuthorized(Partner partner, TableView authorizedTable){
-        authorizedTable.getItems().clear();
+    public void fillTableAuthorized(Partner partner, AuthorizedController authorizedController){
+        authorizedController.getAuthorizedTable().getItems().clear();
+        authorizedController.setPartner(partner);
         if (partner != null){
             for (Object thisAuthorized:partner.getAuthorized()) {
-                authorizedTable.getItems().add(String.valueOf(thisAuthorized));
+                authorizedController.getAuthorizedTable().getItems().add(String.valueOf(thisAuthorized));
             }
         }
 

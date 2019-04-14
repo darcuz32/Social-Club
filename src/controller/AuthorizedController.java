@@ -8,10 +8,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Club;
 import model.Partner;
 
+import javax.swing.*;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +46,8 @@ public class AuthorizedController {
     public Club clubToSearch;
 
     public Stage primaryStage;
+
+    public Partner partner;
 
     public void initialize(){
 
@@ -80,7 +85,24 @@ public class AuthorizedController {
     }
 
     public void handleAddAuthorized(){
-
+        try {
+            club.checkPartner(partner);
+            URL url = getClass().getClassLoader().getResource("resources/views/AddAuthorized.fxml");
+            FXMLLoader fxmlLoader = new FXMLLoader(url);
+            Parent parent = fxmlLoader.load();
+            AddAuthorizedController addAuthorizedController = fxmlLoader.getController();
+            addAuthorizedController.setAuthorizedController(this);
+            addAuthorizedController.setPartner(partner);
+            Scene scene = new Scene(parent);
+            Stage dialog = new Stage();
+            dialog.initModality(Modality.APPLICATION_MODAL);
+            dialog.setScene(scene);
+            dialog.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null,e.getMessage());
+        }
     }
 
     public void handlePartnersMenu() throws Exception{
@@ -118,5 +140,9 @@ public class AuthorizedController {
 
     public TableView<String> getAuthorizedTable() {
         return authorizedTable;
+    }
+
+    public void setPartner(Partner partner) {
+        this.partner = partner;
     }
 }

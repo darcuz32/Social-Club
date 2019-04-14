@@ -1,6 +1,8 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Partner {
 
@@ -14,7 +16,6 @@ public class Partner {
         this.id = id;
         this.name = name;
         this.authorized = new ArrayList();
-        this.authorized.add("El otro men "+this.name);
         this.invoices = new ArrayList();
     }
 
@@ -54,12 +55,29 @@ public class Partner {
         return invoices.size();
     }
 
-    public void setAuthorized(String authorized) {
-        this.authorized.add(authorized);
+    public String validateAuthorized(String name){
+        String validAuthorized = null;
+        for (String thisAuthorized: authorized) {
+            String patternString = ".*"+name.trim()+".*";
+
+            Pattern pattern = Pattern.compile(patternString, Pattern.CASE_INSENSITIVE);
+            Matcher matcherAuthorized = pattern.matcher(thisAuthorized);
+
+            boolean matchesAuthorized = matcherAuthorized.matches();
+            if (matchesAuthorized){
+                validAuthorized = thisAuthorized;
+            }
+        }
+        return  validAuthorized;
     }
 
-    public void addAuthorized(String nameAuthorized){
-
+    public void addAuthorized(String name) throws Exception{
+        String authorized = validateAuthorized(name);
+        if (authorized == null) {
+            this.authorized.add(name);
+        }else{
+            throw new Exception("Esta persona ya se encuentra registrada como autorizada de este socio.");
+        }
     }
 
     @Override
