@@ -25,7 +25,7 @@ public class Club {
 
     public Club searchPartner(String txtToSearch) {
         Club clubToSearch = new Club();
-        for (Partner thisPartner: this.partners) {
+        for (Partner thisPartner: partners) {
             String patternString = ".*"+txtToSearch+".*";
 
             Pattern pattern = Pattern.compile(patternString, Pattern.CASE_INSENSITIVE);
@@ -33,12 +33,13 @@ public class Club {
             Matcher matcherId = pattern.matcher(thisPartner.getId());
 
 
-            boolean matchesName = matcherName.matches();
+           boolean matchesName = matcherName.matches();
             boolean matchesId = matcherId.matches();
 
 
-            if (matchesId || matchesName){
-               clubToSearch.addPartner(thisPartner.getId(), thisPartner.getName());
+             if (matchesId || matchesName){
+                Partner newPartner = new Partner(thisPartner.getId(), thisPartner.getName(), thisPartner.getAuthorized(), thisPartner.getInvoices());
+                clubToSearch.partners.add(newPartner);
             }
         }
         return  clubToSearch;

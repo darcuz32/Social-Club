@@ -14,6 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Club;
+import model.Invoice;
 import model.Partner;
 
 import javax.swing.*;
@@ -103,26 +104,30 @@ public class PartnersController {
         authorizedController.setClub(club);
         authorizedController.setPrimaryStage(primaryStage);
         primaryStage.setScene(new Scene(parent));
+        parent.requestFocus();
 
         authorizedController.getPartnersAuthorizedTable().getItems().clear();
         for (Partner thisPartner: club.getPartners()) {
             authorizedController.getPartnersAuthorizedTable().getItems().add(thisPartner);
         }
-
-        authorizedController.getPartnersAuthorizedTable().getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> fillTableAuthorized(newSelection, authorizedController));
-
     }
 
-    public void fillTableAuthorized(Partner partner, AuthorizedController authorizedController){
-        authorizedController.getAuthorizedTable().getItems().clear();
-        authorizedController.setPartner(partner);
-        if (partner != null){
-            for (Object thisAuthorized:partner.getAuthorized()) {
-                authorizedController.getAuthorizedTable().getItems().add(String.valueOf(thisAuthorized));
-            }
+    public void handleInvoicesMenu() throws Exception{
+        URL url = getClass().getClassLoader().getResource("resources/views/Invoices.fxml");
+        FXMLLoader fxmlLoader = new FXMLLoader(url);
+        Parent parent = fxmlLoader.load();
+        InvoicesController invoicesController = fxmlLoader.getController();
+        invoicesController.setClub(club);
+        invoicesController.setPrimaryStage(primaryStage);
+        primaryStage.setScene(new Scene(parent));
+        parent.requestFocus();
+
+        invoicesController.getPartnersInvoicesTable().getItems().clear();
+        for (Partner thisPartner: club.getPartners()) {
+            invoicesController.getPartnersInvoicesTable().getItems().add(thisPartner);
         }
-
     }
+
 
     public void handleRemoveFocus(){
         Parent parent = partnersTable.getParent();

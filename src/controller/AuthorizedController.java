@@ -11,6 +11,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Club;
+import model.Invoice;
 import model.Partner;
 
 import javax.swing.*;
@@ -72,6 +73,8 @@ public class AuthorizedController {
         authorizedTable.getColumns().add(columnAuthorizedName);
         authorizedTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
+        partnersAuthorizedTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> fillTableAuthorized(newSelection));
+
 
     }
 
@@ -121,6 +124,35 @@ public class AuthorizedController {
         }
     }
 
+    public void handleInvoicesMenu() throws Exception{
+        URL url = getClass().getClassLoader().getResource("resources/views/Invoices.fxml");
+        FXMLLoader fxmlLoader = new FXMLLoader(url);
+        Parent parent = fxmlLoader.load();
+        InvoicesController invoicesController = fxmlLoader.getController();
+        invoicesController.setClub(club);
+        invoicesController.setPrimaryStage(primaryStage);
+        primaryStage.setScene(new Scene(parent));
+        parent.requestFocus();
+
+        invoicesController.getPartnersInvoicesTable().getItems().clear();
+        for (Partner thisPartner: club.getPartners()) {
+            invoicesController.getPartnersInvoicesTable().getItems().add(thisPartner);
+        }
+
+    }
+
+    public void fillTableAuthorized(Partner partner){
+        authorizedTable.getItems().clear();
+        this.partner = partner;
+        System.out.println(partner);
+        if (partner != null){
+            for (String thisAuthorized:partner.getAuthorized()) {
+               authorizedTable.getItems().add(String.valueOf(thisAuthorized));
+            }
+        }
+
+    }
+
     public void handleRemoveFocus(){
         Parent parent = txtSearchPartner.getParent();
         parent.requestFocus();
@@ -140,9 +172,5 @@ public class AuthorizedController {
 
     public TableView<String> getAuthorizedTable() {
         return authorizedTable;
-    }
-
-    public void setPartner(Partner partner) {
-        this.partner = partner;
     }
 }

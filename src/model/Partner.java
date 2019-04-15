@@ -16,7 +16,14 @@ public class Partner {
         this.id = id;
         this.name = name;
         this.authorized = new ArrayList();
-        this.invoices = new ArrayList();
+        this.invoices = new ArrayList<>();
+    }
+
+    public Partner(String id, String name, ArrayList<String> authorized, ArrayList<Invoice> invoices) {
+        this.id = id;
+        this.name = name;
+        this.authorized = authorized;
+        this.invoices = invoices;
     }
 
     public String getId() {
@@ -35,7 +42,7 @@ public class Partner {
         this.name = name;
     }
 
-    public ArrayList getInvoices() {
+    public ArrayList<Invoice> getInvoices() {
         return invoices;
     }
 
@@ -43,7 +50,7 @@ public class Partner {
         this.invoices.add(invoices);
     }
 
-    public ArrayList getAuthorized() {
+    public ArrayList<String> getAuthorized() {
         return authorized;
     }
 
@@ -80,6 +87,8 @@ public class Partner {
         }
     }
 
+
+
     @Override
     public String toString() {
         return "Partner{" +
@@ -87,7 +96,7 @@ public class Partner {
                 ", name='" + name + '\'' +
                 ", invoices=" + invoices.toString() +
                 ", invoices size=" + invoices.size() +
-                ", authorized=" + authorized.size() +
+                ", authorized=" + authorized +
                 '}';
     }
 }

@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#handleRemoveFocus" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PartnersController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#handleRemoveFocus" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PartnersController">
    <children>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="40.0">
          <children>
@@ -29,7 +29,7 @@
             <items>
               <MenuItem fx:id="btnPartnersMenu" mnemonicParsing="false" text="Socios" />
                   <MenuItem fx:id="btnAuthorizedMenu" mnemonicParsing="false" onAction="#handleAuthorizedMenu" text="Autorizados" />
-                  <MenuItem fx:id="btnInvoicesMenu" mnemonicParsing="false" text="Facturas" />
+                  <MenuItem fx:id="btnInvoicesMenu" mnemonicParsing="false" onAction="#handleInvoicesMenu" text="Facturas" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Opciones">
