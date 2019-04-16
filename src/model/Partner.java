@@ -1,8 +1,10 @@
 package model;
 
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+
 import java.util.ArrayList;
 
-public class Partner {
+public class Partner extends RecursiveTreeObject<Partner> {
 
     //instance variables
     private String id;
@@ -47,6 +49,10 @@ public class Partner {
 
     public int getAuthorizedSize() {
         return authorized.size();
+    }
+
+    public int getInvoicesSize() {
+        return invoices.size();
     }
 
     public void setAuthorized(String authorized) {

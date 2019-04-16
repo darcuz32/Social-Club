@@ -1,8 +1,15 @@
 package controller;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.RecursiveTreeItem;
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TreeItem;
 import javafx.stage.Stage;
 import model.Club;
 import model.Partner;
@@ -13,13 +20,13 @@ import java.util.ArrayList;
 public class AffiliatePartnerController {
 
     @FXML
-    private TextField txtName;
+    private JFXTextField txtName;
 
     @FXML
-    private TextField txtId;
+    private JFXTextField txtId;
 
     @FXML
-    private Button btnAffiliatePartner;
+    private JFXButton btnAffiliatePartner;
 
     private PartnersController partnersController;
 
@@ -34,21 +41,26 @@ public class AffiliatePartnerController {
         String id = txtId.getText();
 
         if (name.isEmpty() && id.isEmpty()){
-            txtName.setStyle("-fx-text-box-border: red");
-            txtId.setStyle("-fx-text-box-border: red");
+            txtName.setStyle("-jfx-focus-color: red");
+            txtId.setStyle("-jfx-focus-color: red");
+            txtName.setStyle("-jfx-unfocus-color: red");
+            txtId.setStyle("-jfx-unfocus-color: red");
             return;
         }else if (id.isEmpty()){
-            txtId.setStyle("-fx-text-box-border: red");
+            txtId.setStyle("-jfx-focus-color: red");
+            txtId.setStyle("-jfx-unfocus-color: red");
             return;
         }else if(name.isEmpty()){
-            txtName.setStyle("-fx-text-box-border: red");
+            txtName.setStyle("-jfx-focus-color: red");
+            txtName.setStyle("-jfx-unfocus-color: red");
             return;
         }
 
         try{
             Integer.parseInt(id);
         }catch (NumberFormatException e){
-            txtId.setStyle("-fx-text-box-border: red");
+            txtId.setStyle("-jfx-focus-color: red");
+            txtId.setStyle("-jfx-unfocus-color: red");
             return;
         }
 
@@ -59,10 +71,10 @@ public class AffiliatePartnerController {
             return;
         }
 
-        partnersController.getPartnersTable().getItems().clear();
-        for (Partner thisPartner: club.getPartners()) {
-            partnersController.getPartnersTable().getItems().add(thisPartner);
-        }
+        ObservableList<Partner> partners = FXCollections.observableArrayList(club.getPartners());
+        final TreeItem<Partner> root = new RecursiveTreeItem<>(partners, RecursiveTreeObject::getChildren);
+        partnersController.getPartnersTable().setRoot(root);
+        partnersController.getPartnersTable().setShowRoot(false);
 
 
         ((Stage) txtName.getScene().getWindow()).close();
