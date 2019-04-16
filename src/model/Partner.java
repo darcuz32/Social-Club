@@ -48,10 +48,6 @@ public class Partner extends RecursiveTreeObject<Partner> {
         return invoices;
     }
 
-    public void setInvoices(Invoice invoices) {
-        this.invoices.add(invoices);
-    }
-
     public ArrayList<String> getAuthorized() {
         return authorized;
     }
@@ -62,10 +58,6 @@ public class Partner extends RecursiveTreeObject<Partner> {
 
     public int getInvoicesSize() {
         return invoices.size();
-    }
-
-    public void setAuthorized(String authorized) {
-        this.authorized.add(authorized);
     }
 
     public String validateAuthorized(String name){
@@ -90,6 +82,17 @@ public class Partner extends RecursiveTreeObject<Partner> {
             this.authorized.add(name);
         }else{
             throw new Exception("Esta persona ya se encuentra registrada como autorizada de este socio.");
+        }
+    }
+
+    public void addInvoice(String name, String concept, Double amount){
+        Invoice invoice = new Invoice(name, concept, amount);
+        this.invoices.add(invoice);
+    }
+
+    public void checkInvoice(Invoice invoice) throws Exception{
+        if (invoice == null){
+            throw new Exception("Seleccione una factura.");
         }
     }
 

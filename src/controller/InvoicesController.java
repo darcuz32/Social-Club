@@ -2,6 +2,7 @@ package controller;
 
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,6 +21,8 @@ import model.Partner;
 import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Map;
 
 public class InvoicesController {
     @FXML
@@ -57,6 +60,8 @@ public class InvoicesController {
 
     public Partner partner;
 
+    public Invoice invoice;
+
     public void initialize(){
 
         TableColumn<Partner, String> columnId = new TableColumn<>("Cédula");
@@ -83,15 +88,16 @@ public class InvoicesController {
         columnConcept.setStyle("-fx-alignment: CENTER;");
 
         TableColumn<Invoice, String> columnAmount = new TableColumn<>("Monto");
-        columnAmount.setCellValueFactory(new PropertyValueFactory<>("amount"));
+        columnAmount.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFormatedAmount()));
         columnAmount.prefWidthProperty().bind(invoicesTable.widthProperty().multiply(0.2));
         columnAmount.setStyle("-fx-alignment: CENTER;");
-
 
         invoicesTable.getColumns().addAll(columnInvoiceName,columnConcept, columnAmount);
         invoicesTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
-        partnersInvoicesTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> fillTableInvoices(newSelection));
+        partnersInvoicesTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> fillComboBoxInvoices(newSelection));
+        comboBoxPartner.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> fillTableInvoices(newSelection));
+        invoicesTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> invoice = newSelection);
 
 
     }
@@ -106,14 +112,15 @@ public class InvoicesController {
     }
 
     public void handleAddInvoice(){
-        /*try {
+        try {
             club.checkPartner(partner);
-            URL url = getClass().getClassLoader().getResource("resources/views/AddInvoice.fxml");
+            URL url = getClass().getClassLoader().getResource("resources/views/RegisterConsumption.fxml");
             FXMLLoader fxmlLoader = new FXMLLoader(url);
             Parent parent = fxmlLoader.load();
-            AddAuthorizedController addAuthorizedController = fxmlLoader.getController();
-            addAuthorizedController.setAuthorizedController(this);
-            addAuthorizedController.setPartner(partner);
+            RegisterConsumptionController registerConsumptionController = fxmlLoader.getController();
+            registerConsumptionController.setInvoicesController(this);
+            registerConsumptionController.setPartner(partner);
+            registerConsumptionController.fillComboBox(partner);
             Scene scene = new Scene(parent);
             Stage dialog = new Stage();
             dialog.initModality(Modality.APPLICATION_MODAL);
@@ -123,11 +130,30 @@ public class InvoicesController {
             e.printStackTrace();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null,e.getMessage());
-        }*/
+        }
     }
 
     public void handlePayInvoice(){
-
+        try {
+            club.checkPartner(partner);
+            partner.checkInvoice(invoice);
+            URL url = getClass().getClassLoader().getResource("resources/views/PayInvoice.fxml");
+            FXMLLoader fxmlLoader = new FXMLLoader(url);
+            Parent parent = fxmlLoader.load();
+            PayInvoiceController payInvoiceController = fxmlLoader.getController();
+            payInvoiceController.setInvoicesController(this);
+            payInvoiceController.setPartner(partner);
+            payInvoiceController.setInvoice(invoice);
+            Scene scene = new Scene(parent);
+            Stage dialog = new Stage();
+            dialog.initModality(Modality.APPLICATION_MODAL);
+            dialog.setScene(scene);
+            dialog.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null,e.getMessage());
+        }
     }
 
     public void handlePartnersMenu() throws Exception{
@@ -168,14 +194,11 @@ public class InvoicesController {
         parent.requestFocus();
     }
 
-    public void fillTableInvoices(Partner partner){
+    public void fillComboBoxInvoices(Partner partner){
         invoicesTable.getItems().clear();
         comboBoxPartner.getItems().clear();
         this.partner = partner;
         if (partner != null){
-            for (Invoice thisInvoice: partner.getInvoices()) {
-                invoicesTable.getItems().add(thisInvoice);
-            }
             comboBoxPartner.getItems().add("Todos");
             comboBoxPartner.getItems().add(partner.getName());
             for (Object thisAuthorized: partner.getAuthorized()) {
@@ -184,6 +207,32 @@ public class InvoicesController {
             comboBoxPartner.getSelectionModel().select(0);
         }
 
+    }
+
+    public void fillTableInvoices(Object clients){
+        invoicesTable.getItems().clear();
+        Double totalAmount = 0.0;
+        if (partner != null){
+            for (Invoice thisInvoice: partner.getInvoices()) {
+                if (thisInvoice.getName().equals(String.valueOf(clients)) || String.valueOf(clients).equals("Todos")) {
+                    invoicesTable.getItems().add(thisInvoice);
+                    totalAmount += thisInvoice.getAmount();
+                }
+            }
+            if (totalAmount > 0) {
+                invoicesTable.getItems().add(new Invoice("", "Saldo total", totalAmount));
+            }
+        }
+
+    }
+
+    public void setComboBoxValue(String name){
+        ObservableList<String> items = comboBoxPartner.getItems();
+        for(String thisOption : items){
+            if (thisOption.equals(name)){
+                comboBoxPartner.getSelectionModel().select(items.indexOf(thisOption));
+            }
+        }
     }
 
     public void setClub(Club club) {
@@ -196,5 +245,9 @@ public class InvoicesController {
 
     public TableView<Partner> getPartnersInvoicesTable() {
         return partnersInvoicesTable;
+    }
+
+    public TableView<Invoice> getInvoicesTable() {
+        return invoicesTable;
     }
 }

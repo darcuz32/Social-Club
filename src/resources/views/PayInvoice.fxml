@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#handleRemoveFocus" prefHeight="335.0" prefWidth="434.0" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PayInvoiceController">
+   <children>
+      <Label text="Pagar factura">
+         <VBox.margin>
+            <Insets top="30.0" />
+         </VBox.margin>
+         <font>
+            <Font name="System Bold" size="36.0" />
+         </font>
+      </Label>
+      <HBox prefHeight="5.0" prefWidth="434.0" spacing="20.0">
+         <children>
+            <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="183.0" text="Socio" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin>
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblPartner" prefHeight="17.0" prefWidth="299.0" text="Sin socio" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets right="50.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="System Italic" size="16.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <HBox layoutX="10.0" layoutY="113.0" prefHeight="5.0" prefWidth="434.0" spacing="20.0">
+         <children>
+            <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="183.0" text="Cliente" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin>
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblClient" prefHeight="17.0" prefWidth="299.0" text="Sin cliente" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets right="50.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="System Italic" size="16.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <HBox layoutX="10.0" layoutY="158.0" prefHeight="5.0" prefWidth="434.0" spacing="20.0">
+         <children>
+            <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="183.0" text="Concepto" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin>
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblConcept" prefHeight="17.0" prefWidth="299.0" text="Sin concepto" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets right="50.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="System Italic" size="16.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <HBox layoutX="10.0" layoutY="203.0" prefHeight="5.0" prefWidth="434.0" spacing="20.0">
+         <children>
+            <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="183.0" text="Monto" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin>
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblAmount" prefHeight="17.0" prefWidth="299.0" text="Sin monto" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets right="50.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="System Italic" size="16.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+         <children>
+            <Button fx:id="btnPayInvoice" mnemonicParsing="false" onAction="#handleDonePayInvoice" text="Pagar factura" />
+            <Button fx:id="btnCancelPayment" mnemonicParsing="false" onAction="#handleCancelPayment" text="Cancelar" />
+         </children>
+      </HBox>
+   </children>
+</VBox>
