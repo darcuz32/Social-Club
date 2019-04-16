@@ -1,8 +1,12 @@
 package model;
 
-import java.util.ArrayList;
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 
-public class Partner {
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Partner extends RecursiveTreeObject<Partner> {
 
     //instance variables
     private String id;
@@ -14,7 +18,14 @@ public class Partner {
         this.id = id;
         this.name = name;
         this.authorized = new ArrayList();
-        this.invoices = new ArrayList();
+        this.invoices = new ArrayList<>();
+    }
+
+    public Partner(String id, String name, ArrayList<String> authorized, ArrayList<Invoice> invoices) {
+        this.id = id;
+        this.name = name;
+        this.authorized = authorized;
+        this.invoices = invoices;
     }
 
     public String getId() {
@@ -33,15 +44,11 @@ public class Partner {
         this.name = name;
     }
 
-    public ArrayList getInvoices() {
+    public ArrayList<Invoice> getInvoices() {
         return invoices;
     }
 
-    public void setInvoices(Invoice invoices) {
-        this.invoices.add(invoices);
-    }
-
-    public ArrayList getAuthorized() {
+    public ArrayList<String> getAuthorized() {
         return authorized;
     }
 
@@ -49,21 +56,56 @@ public class Partner {
         return authorized.size();
     }
 
-    public void setAuthorized(String authorized) {
-        this.authorized.add(authorized);
+    public int getInvoicesSize() {
+        return invoices.size();
     }
 
-    public void addAuthorized(String nameAuthorized){
+    public String validateAuthorized(String name){
+        String validAuthorized = null;
+        for (String thisAuthorized: authorized) {
+            String patternString = ".*"+name.trim()+".*";
 
+            Pattern pattern = Pattern.compile(patternString, Pattern.CASE_INSENSITIVE);
+            Matcher matcherAuthorized = pattern.matcher(thisAuthorized);
+
+            boolean matchesAuthorized = matcherAuthorized.matches();
+            if (matchesAuthorized){
+                validAuthorized = thisAuthorized;
+            }
+        }
+        return  validAuthorized;
     }
+
+    public void addAuthorized(String name) throws Exception{
+        String authorized = validateAuthorized(name);
+        if (authorized == null) {
+            this.authorized.add(name);
+        }else{
+            throw new Exception("Esta persona ya se encuentra registrada como autorizada de este socio.");
+        }
+    }
+
+    public void addInvoice(String name, String concept, Double amount){
+        Invoice invoice = new Invoice(name, concept, amount);
+        this.invoices.add(invoice);
+    }
+
+    public void checkInvoice(Invoice invoice) throws Exception{
+        if (invoice == null){
+            throw new Exception("Seleccione una factura.");
+        }
+    }
+
+
 
     @Override
     public String toString() {
         return "Partner{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", invoices=" + invoices.size() +
-                ", authorized=" + authorized.size() +
+                ", invoices=" + invoices.toString() +
+                ", invoices size=" + invoices.size() +
+                ", authorized=" + authorized +
                 '}';
     }
 }
