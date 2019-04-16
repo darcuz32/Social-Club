@@ -1,10 +1,12 @@
 package model;
 
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Partner {
+public class Partner extends RecursiveTreeObject<Partner> {
 
     //instance variables
     private String id;
@@ -60,6 +62,10 @@ public class Partner {
 
     public int getInvoicesSize() {
         return invoices.size();
+    }
+
+    public void setAuthorized(String authorized) {
+        this.authorized.add(authorized);
     }
 
     public String validateAuthorized(String name){

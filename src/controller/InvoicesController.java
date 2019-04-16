@@ -1,6 +1,10 @@
 package controller;
 
+import com.jfoenix.controls.RecursiveTreeItem;
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -136,10 +140,10 @@ public class InvoicesController {
         primaryStage.setScene(new Scene(parent));
         parent.requestFocus();
 
-        partnersController.getPartnersTable().getItems().clear();
-        for (Partner thisPartner: club.getPartners()) {
-            partnersController.getPartnersTable().getItems().add(thisPartner);
-        }
+        ObservableList<Partner> partners = FXCollections.observableArrayList(club.getPartners());
+        final TreeItem<Partner> root = new RecursiveTreeItem<>(partners, RecursiveTreeObject::getChildren);
+        partnersController.getPartnersTable().setRoot(root);
+        partnersController.getPartnersTable().setShowRoot(false);
     }
 
     public void handleAuthorizedMenu() throws Exception{
