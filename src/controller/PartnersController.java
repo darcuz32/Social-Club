@@ -1,10 +1,7 @@
 package controller;
 
 import com.jfoenix.controls.*;
-import com.jfoenix.controls.cells.editors.TextFieldEditorBuilder;
-import com.jfoenix.controls.cells.editors.base.GenericEditableTreeTableCell;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
-import javafx.beans.property.ReadOnlyIntegerWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,21 +9,20 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.Label;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableColumn;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Club;
-import model.Invoice;
 import model.Partner;
 
 import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 
 public class PartnersController {
 
@@ -35,18 +31,6 @@ public class PartnersController {
 
     @FXML
     JFXButton btnAffiliatePartner = new JFXButton("JFoenix Button");
-
-    @FXML
-    private MenuItem btnPartnersMenu;
-
-    @FXML
-    private MenuItem btnAuthorizedMenu;
-
-    @FXML
-    private MenuItem btnInvoicesMenu;
-
-    @FXML
-    private Button btnShow;
 
     @FXML
     private StackPane stackPane;
@@ -99,6 +83,8 @@ public class PartnersController {
         columnInvoices.getStyleClass().add("columns");
 
         partnersTable.getColumns().setAll(columnId, columnName, columnAuthorized, columnInvoices);
+
+        partnersTable.setPlaceholder(new Label("Sin socios"));
 
 
     }

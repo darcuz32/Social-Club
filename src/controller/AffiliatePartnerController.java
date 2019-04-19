@@ -1,22 +1,15 @@
 package controller;
 
-import com.jfoenix.controls.*;
-import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDialog;
+import com.jfoenix.controls.JFXDialogLayout;
+import com.jfoenix.controls.JFXTextField;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TreeItem;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Club;
-import model.Partner;
-
-import javax.swing.*;
-import java.util.ArrayList;
 
 public class AffiliatePartnerController {
 
@@ -25,10 +18,6 @@ public class AffiliatePartnerController {
 
     @FXML
     private JFXTextField txtId;
-
-    @FXML
-    private JFXButton btnAffiliatePartner;
-
     @FXML
     private StackPane stackPane;
 

@@ -1,19 +1,11 @@
 package controller;
 
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import model.Invoice;
 import model.Partner;
-
-import javax.swing.*;
 
 public class RegisterConsumptionController {
     @FXML
@@ -24,9 +16,6 @@ public class RegisterConsumptionController {
 
     @FXML
     private JFXTextField txtAmount;
-
-    @FXML
-    private JFXButton btnRegisterConsumption;
 
     public InvoicesController invoicesController;
 

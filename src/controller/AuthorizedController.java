@@ -3,15 +3,15 @@ package controller;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.Label;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableColumn;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
@@ -19,14 +19,10 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Authorized;
 import model.Club;
-import model.Invoice;
 import model.Partner;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 public class AuthorizedController {
     @FXML
@@ -34,18 +30,6 @@ public class AuthorizedController {
 
     @FXML
     private JFXTreeTableView<Authorized> authorizedTable;
-
-    @FXML
-    private MenuItem btnPartnersMenu;
-
-    @FXML
-    private MenuItem btnAuthorizedMenu;
-
-    @FXML
-    private MenuItem btnInvoicesMenu;
-
-    @FXML
-    private JFXButton btnAddAuthorized;
 
     @FXML
     private JFXTextField txtSearchPartner;
@@ -83,6 +67,8 @@ public class AuthorizedController {
 
         partnersAuthorizedTable.getColumns().addAll(columnId,columnName);
 
+        partnersAuthorizedTable.setPlaceholder(new Label("Sin socios"));
+
         JFXTreeTableColumn<Authorized, String> columnAuthorizedName = new JFXTreeTableColumn<>("Nombre");
         columnAuthorizedName.setCellValueFactory((TreeTableColumn.CellDataFeatures<Authorized, String> param) ->{
             if(columnAuthorizedName.validateValue(param)) return new SimpleStringProperty(param.getValue().getValue().getName());
@@ -93,6 +79,8 @@ public class AuthorizedController {
         columnAuthorizedName.getStyleClass().add("columns");
 
         authorizedTable.getColumns().add(columnAuthorizedName);
+
+        authorizedTable.setPlaceholder(new Label("Sin autorizados"));
 
         partnersAuthorizedTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null){

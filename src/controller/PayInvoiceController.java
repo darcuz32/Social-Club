@@ -1,15 +1,11 @@
 package controller;
 
-import com.jfoenix.controls.JFXButton;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import model.Invoice;
 import model.Partner;
-
-import java.util.Iterator;
 
 public class PayInvoiceController {
     @FXML
@@ -23,12 +19,6 @@ public class PayInvoiceController {
 
     @FXML
     private Label lblAmount;
-
-    @FXML
-    private JFXButton btnPayInvoice;
-
-    @FXML
-    private JFXButton btnCancelPayment;
 
     public InvoicesController invoicesController;
 

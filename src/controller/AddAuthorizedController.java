@@ -6,16 +6,11 @@ import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXTextField;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import model.Club;
 import model.Partner;
-
-import javax.swing.*;
 
 public class AddAuthorizedController {
     @FXML
@@ -23,9 +18,6 @@ public class AddAuthorizedController {
 
     @FXML
     private Label lblPartner;
-
-    @FXML
-    private JFXButton btnAddAuthorized;
 
     @FXML
     private StackPane stackPane;

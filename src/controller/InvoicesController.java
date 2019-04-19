@@ -2,34 +2,27 @@ package controller;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.Label;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableColumn;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import model.Authorized;
 import model.Club;
 import model.Invoice;
 import model.Partner;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Map;
 
 public class InvoicesController {
     @FXML
@@ -37,21 +30,6 @@ public class InvoicesController {
 
     @FXML
     private JFXTreeTableView<Invoice> invoicesTable;
-
-    @FXML
-    private MenuItem btnPartnersMenu;
-
-    @FXML
-    private MenuItem btnAuthorizedMenu;
-
-    @FXML
-    private MenuItem btnInvoicesMenu;
-
-    @FXML
-    private JFXButton btnAddInvoice;
-
-    @FXML
-    private JFXButton btnPayInvoice;
 
     @FXML
     private JFXTextField txtSearchPartner;
@@ -94,6 +72,8 @@ public class InvoicesController {
 
         partnersInvoicesTable.getColumns().addAll(columnId,columnName);
 
+        partnersInvoicesTable.setPlaceholder(new Label("Sin socios"));
+
         JFXTreeTableColumn<Invoice, String> columnInvoiceName = new JFXTreeTableColumn<>("Nombre");
         columnInvoiceName.setCellValueFactory((TreeTableColumn.CellDataFeatures<Invoice, String> param) ->{
             if(columnInvoiceName.validateValue(param)) return new SimpleStringProperty(param.getValue().getValue().getName());
@@ -122,6 +102,8 @@ public class InvoicesController {
         columnAmount.getStyleClass().add("columns");
 
         invoicesTable.getColumns().addAll(columnInvoiceName,columnConcept, columnAmount);
+
+        invoicesTable.setPlaceholder(new Label("Sin facturas"));
 
         partnersInvoicesTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null){
@@ -278,7 +260,6 @@ public class InvoicesController {
     }
 
     public void fillTableInvoices(Object clients){
-        System.out.println(clients);
         invoicesTable.setRoot(null);
         Double totalAmount = 0.0;
         if (partner != null){
