@@ -1,19 +1,26 @@
 package controller;
 
-import com.jfoenix.controls.RecursiveTreeItem;
+import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import model.Authorized;
 import model.Club;
 import model.Invoice;
 import model.Partner;
@@ -26,10 +33,10 @@ import java.util.Map;
 
 public class InvoicesController {
     @FXML
-    private TableView<Partner> partnersInvoicesTable;
+    private JFXTreeTableView<Partner> partnersInvoicesTable;
 
     @FXML
-    private TableView<Invoice> invoicesTable;
+    private JFXTreeTableView<Invoice> invoicesTable;
 
     @FXML
     private MenuItem btnPartnersMenu;
@@ -41,16 +48,19 @@ public class InvoicesController {
     private MenuItem btnInvoicesMenu;
 
     @FXML
-    private Button btnAddInvoice;
+    private JFXButton btnAddInvoice;
 
     @FXML
-    private Button btnPayInvoice;
+    private JFXButton btnPayInvoice;
 
     @FXML
-    private TextField txtSearchPartner;
+    private JFXTextField txtSearchPartner;
 
     @FXML
-    private ComboBox comboBoxPartner;
+    private JFXComboBox comboBoxPartner;
+
+    @FXML
+    private StackPane stackPane;
 
     public Club club;
 
@@ -64,40 +74,68 @@ public class InvoicesController {
 
     public void initialize(){
 
-        TableColumn<Partner, String> columnId = new TableColumn<>("Cédula");
-        columnId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        JFXTreeTableColumn<Partner, String> columnId = new JFXTreeTableColumn<>("Cédula");
+        columnId.setCellValueFactory((TreeTableColumn.CellDataFeatures<Partner, String> param) ->{
+            if(columnId.validateValue(param)) return new SimpleStringProperty(param.getValue().getValue().getId());
+            else return columnId.getComputedValue(param);
+        });
         columnId.prefWidthProperty().bind(partnersInvoicesTable.widthProperty().multiply(0.2));
         columnId.setStyle("-fx-alignment: CENTER;");
+        columnId.getStyleClass().add("columns");
 
-        TableColumn<Partner, String> columnName = new TableColumn<>("Nombre");
-        columnName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        JFXTreeTableColumn<Partner, String> columnName = new JFXTreeTableColumn<>("Nombre");
+        columnName.setCellValueFactory((TreeTableColumn.CellDataFeatures<Partner, String> param) ->{
+            if(columnName.validateValue(param)) return new SimpleStringProperty(param.getValue().getValue().getName());
+            else return columnName.getComputedValue(param);
+        });
         columnName.prefWidthProperty().bind(partnersInvoicesTable.widthProperty().multiply(0.8));
         columnName.setStyle("-fx-alignment: CENTER;");
+        columnName.getStyleClass().add("columns");
 
         partnersInvoicesTable.getColumns().addAll(columnId,columnName);
-        partnersInvoicesTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
-        TableColumn<Invoice, String> columnInvoiceName = new TableColumn<>("Nombre");
-        columnInvoiceName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        JFXTreeTableColumn<Invoice, String> columnInvoiceName = new JFXTreeTableColumn<>("Nombre");
+        columnInvoiceName.setCellValueFactory((TreeTableColumn.CellDataFeatures<Invoice, String> param) ->{
+            if(columnInvoiceName.validateValue(param)) return new SimpleStringProperty(param.getValue().getValue().getName());
+            else return columnInvoiceName.getComputedValue(param);
+        });
         columnInvoiceName.prefWidthProperty().bind(invoicesTable.widthProperty().multiply(0.4));
         columnInvoiceName.setStyle("-fx-alignment: CENTER;");
+        columnInvoiceName.getStyleClass().add("columns");
 
-        TableColumn<Invoice, String> columnConcept = new TableColumn<>("Concepto");
-        columnConcept.setCellValueFactory(new PropertyValueFactory<>("concept"));
+        JFXTreeTableColumn<Invoice, String> columnConcept = new JFXTreeTableColumn<>("Concepto");
+        columnConcept.setCellValueFactory((TreeTableColumn.CellDataFeatures<Invoice, String> param) ->{
+            if(columnConcept.validateValue(param)) return new SimpleStringProperty(param.getValue().getValue().getConcept());
+            else return columnConcept.getComputedValue(param);
+        });
         columnConcept.prefWidthProperty().bind(invoicesTable.widthProperty().multiply(0.4));
         columnConcept.setStyle("-fx-alignment: CENTER;");
+        columnConcept.getStyleClass().add("columns");
 
-        TableColumn<Invoice, String> columnAmount = new TableColumn<>("Monto");
-        columnAmount.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFormatedAmount()));
+        JFXTreeTableColumn<Invoice, String> columnAmount = new JFXTreeTableColumn<>("Monto");
+        columnAmount.setCellValueFactory((TreeTableColumn.CellDataFeatures<Invoice, String> param) ->{
+            if(columnAmount.validateValue(param)) return new SimpleStringProperty(param.getValue().getValue().getFormatedAmount());
+            else return columnAmount.getComputedValue(param);
+        });
         columnAmount.prefWidthProperty().bind(invoicesTable.widthProperty().multiply(0.2));
         columnAmount.setStyle("-fx-alignment: CENTER;");
+        columnAmount.getStyleClass().add("columns");
 
         invoicesTable.getColumns().addAll(columnInvoiceName,columnConcept, columnAmount);
-        invoicesTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
-        partnersInvoicesTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> fillComboBoxInvoices(newSelection));
+        partnersInvoicesTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null){
+                fillComboBoxInvoices(newSelection.getValue());
+            }else{
+                fillComboBoxInvoices(null);
+            }
+        });
         comboBoxPartner.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> fillTableInvoices(newSelection));
-        invoicesTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> invoice = newSelection);
+        invoicesTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null){
+                invoice = newSelection.getValue();
+            }
+        });
 
 
     }
@@ -105,10 +143,11 @@ public class InvoicesController {
     public void handleSearchPartner(){
         String txtToSearch = txtSearchPartner.getText();
         clubToSearch = club.searchPartner(txtToSearch);
-        partnersInvoicesTable.getItems().clear();
-        for (Partner thisPartner: clubToSearch.getPartners()) {
-            partnersInvoicesTable.getItems().add(thisPartner);
-        }
+        partnersInvoicesTable.setRoot(null);
+        ObservableList<Partner> partners = FXCollections.observableArrayList(clubToSearch.getPartners());
+        final TreeItem<Partner> root = new RecursiveTreeItem<>(partners, RecursiveTreeObject::getChildren);
+        partnersInvoicesTable.setRoot(root);
+        partnersInvoicesTable.setShowRoot(false);
     }
 
     public void handleAddInvoice(){
@@ -124,12 +163,14 @@ public class InvoicesController {
             Scene scene = new Scene(parent);
             Stage dialog = new Stage();
             dialog.initModality(Modality.APPLICATION_MODAL);
+            dialog.getIcons().add(new Image("resources/images/cs.png"));
             dialog.setScene(scene);
+            dialog.setResizable(false);
             dialog.show();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null,e.getMessage());
+            callExceptionDialog(e);
         }
     }
 
@@ -147,55 +188,82 @@ public class InvoicesController {
             Scene scene = new Scene(parent);
             Stage dialog = new Stage();
             dialog.initModality(Modality.APPLICATION_MODAL);
+            dialog.getIcons().add(new Image("resources/images/cs.png"));
             dialog.setScene(scene);
+            parent.requestFocus();
+            dialog.setResizable(false);
             dialog.show();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null,e.getMessage());
+            callExceptionDialog(e);
         }
     }
 
-    public void handlePartnersMenu() throws Exception{
-        URL url = getClass().getClassLoader().getResource("resources/views/SocialClub.fxml");
-        FXMLLoader fxmlLoader = new FXMLLoader(url);
-        Parent parent = fxmlLoader.load();
-        PartnersController partnersController = fxmlLoader.getController();
-        partnersController.setClub(club);
-        partnersController.setPrimaryStage(primaryStage);
-        primaryStage.setScene(new Scene(parent));
-        parent.requestFocus();
-
-        ObservableList<Partner> partners = FXCollections.observableArrayList(club.getPartners());
-        final TreeItem<Partner> root = new RecursiveTreeItem<>(partners, RecursiveTreeObject::getChildren);
-        partnersController.getPartnersTable().setRoot(root);
-        partnersController.getPartnersTable().setShowRoot(false);
+    public void handlePartnersMenu(){
+        try {
+            URL url = getClass().getClassLoader().getResource("resources/views/SocialClub.fxml");
+            FXMLLoader fxmlLoader = new FXMLLoader(url);
+            Parent parent = null;
+            parent = fxmlLoader.load();
+            PartnersController partnersController = fxmlLoader.getController();
+            partnersController.setClub(club);
+            partnersController.setPrimaryStage(primaryStage);
+            primaryStage.setScene(new Scene(parent, primaryStage.getScene().getWidth(), primaryStage.getScene().getHeight()));
+            parent.requestFocus();
+            partnersController.fillPartnersTable();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void handleAuthorizedMenu() throws Exception{
-        URL url = getClass().getClassLoader().getResource("resources/views/Authorized.fxml");
-        FXMLLoader fxmlLoader = new FXMLLoader(url);
-        Parent parent = fxmlLoader.load();
-        AuthorizedController authorizedController = fxmlLoader.getController();
-        authorizedController.setClub(club);
-        authorizedController.setPrimaryStage(primaryStage);
-        primaryStage.setScene(new Scene(parent));
-        parent.requestFocus();
+    public void handleAuthorizedMenu(){
+        try {
+            URL url = getClass().getClassLoader().getResource("resources/views/Authorized.fxml");
+            FXMLLoader fxmlLoader = new FXMLLoader(url);
+            Parent parent;
+            parent = fxmlLoader.load();
+            AuthorizedController authorizedController = fxmlLoader.getController();
+            authorizedController.setClub(club);
+            authorizedController.setPrimaryStage(primaryStage);
+            primaryStage.setScene(new Scene(parent, primaryStage.getScene().getWidth(), primaryStage.getScene().getHeight()));
+            parent.requestFocus();
+            authorizedController.fillPartnersTable();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        authorizedController.getPartnersAuthorizedTable().getItems().clear();
-        for (Partner thisPartner: club.getPartners()) {
-            authorizedController.getPartnersAuthorizedTable().getItems().add(thisPartner);
+    }
+
+    public void handleAbout(){
+        try {
+            URL url = getClass().getClassLoader().getResource("resources/views/About.fxml");
+            FXMLLoader fxmlLoader = new FXMLLoader(url);
+            Parent parent = fxmlLoader.load();
+            Scene scene = new Scene(parent);
+            Stage dialog = new Stage();
+            dialog.initModality(Modality.APPLICATION_MODAL);
+            dialog.getIcons().add(new Image("resources/images/cs.png"));
+            dialog.setScene(scene);
+            parent.requestFocus();
+            dialog.setResizable(false);
+            dialog.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            callExceptionDialog(e);
         }
 
     }
 
     public void handleRemoveFocus(){
         Parent parent = txtSearchPartner.getParent();
+        stackPane.setVisible(false);
         parent.requestFocus();
     }
 
     public void fillComboBoxInvoices(Partner partner){
-        invoicesTable.getItems().clear();
+        invoicesTable.setRoot(null);
         comboBoxPartner.getItems().clear();
         this.partner = partner;
         if (partner != null){
@@ -210,20 +278,49 @@ public class InvoicesController {
     }
 
     public void fillTableInvoices(Object clients){
-        invoicesTable.getItems().clear();
+        System.out.println(clients);
+        invoicesTable.setRoot(null);
         Double totalAmount = 0.0;
         if (partner != null){
-            for (Invoice thisInvoice: partner.getInvoices()) {
-                if (thisInvoice.getName().equals(String.valueOf(clients)) || String.valueOf(clients).equals("Todos")) {
-                    invoicesTable.getItems().add(thisInvoice);
-                    totalAmount += thisInvoice.getAmount();
-                }
-            }
-            if (totalAmount > 0) {
-                invoicesTable.getItems().add(new Invoice("", "Saldo total", totalAmount));
-            }
+            ObservableList<Invoice> invoices = FXCollections.observableArrayList(partner.getInvoicesFiltered(String.valueOf(clients)));
+            final TreeItem<Invoice> root = new RecursiveTreeItem<>(invoices, RecursiveTreeObject::getChildren);
+            invoicesTable.setRoot(root);
+            invoicesTable.setShowRoot(false);
         }
+    }
 
+    public void fillPartnersTable(){
+        ObservableList<Partner> partners = FXCollections.observableArrayList(club.getPartners());
+        final TreeItem<Partner> root = new RecursiveTreeItem<>(partners, RecursiveTreeObject::getChildren);
+        partnersInvoicesTable.setRoot(root);
+        partnersInvoicesTable.setShowRoot(false);
+    }
+
+    public void callExceptionDialog(Exception e){
+        JFXDialogLayout content = new JFXDialogLayout();
+        Text headerText = new Text("Error");
+        headerText.getStyleClass().add("dialog-text");
+        content.setHeading(headerText);
+        Text msgText = new Text(e.getMessage());
+        msgText.getStyleClass().add("dialog-text");
+        content.setBody(msgText);
+        stackPane.autosize();
+        JFXDialog dialog = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.CENTER);
+        JFXButton button = new JFXButton("Ok");
+        content.getStyleClass().add("background");
+        content.getStyleClass().add("dialog");
+        button.getStyleClass().add("btn");
+        button.setOnAction(event -> {
+            Parent parent = txtSearchPartner.getParent();
+            stackPane.setVisible(false);
+            parent.requestFocus();
+            dialog.close();
+        });
+        content.setActions(button);
+        stackPane.setVisible(true);
+        Parent parent = txtSearchPartner.getParent();
+        parent.requestFocus();
+        dialog.show();
     }
 
     public void setComboBoxValue(String name){
@@ -241,13 +338,5 @@ public class InvoicesController {
 
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
-    }
-
-    public TableView<Partner> getPartnersInvoicesTable() {
-        return partnersInvoicesTable;
-    }
-
-    public TableView<Invoice> getInvoicesTable() {
-        return invoicesTable;
     }
 }

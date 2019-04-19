@@ -48,6 +48,21 @@ public class Partner extends RecursiveTreeObject<Partner> {
         return invoices;
     }
 
+    public ArrayList<Invoice> getInvoicesFiltered(String client) {
+        ArrayList<Invoice> invoicesToShow = new ArrayList<>();
+        Double totalAmount = 0.0;
+        for (Invoice thisInvoice: this.invoices){
+            if (thisInvoice.getName().equals(client) || client.equals("Todos")) {
+                invoicesToShow.add(thisInvoice);
+                totalAmount += thisInvoice.getAmount();
+            }
+        }
+        if (totalAmount > 0) {
+            invoicesToShow.add(new Invoice("", "Saldo total", totalAmount));
+        }
+        return invoicesToShow;
+    }
+
     public ArrayList<String> getAuthorized() {
         return authorized;
     }
@@ -81,7 +96,7 @@ public class Partner extends RecursiveTreeObject<Partner> {
         if (authorized == null) {
             this.authorized.add(name);
         }else{
-            throw new Exception("Esta persona ya se encuentra registrada como autorizada de este socio.");
+            throw new Exception("Esta persona ya se encuentra\n registrada como autorizada\n de este socio.");
         }
     }
 
@@ -91,9 +106,17 @@ public class Partner extends RecursiveTreeObject<Partner> {
     }
 
     public void checkInvoice(Invoice invoice) throws Exception{
-        if (invoice == null){
+        if (invoice == null || (invoice.getName() == "" &&  invoice.getConcept() == "Saldo total")){
             throw new Exception("Seleccione una factura.");
         }
+    }
+
+    public  ArrayList<Authorized> getAuthorizedAsObject(){
+        ArrayList<Authorized> authorizedCollection = new ArrayList<>();
+        for (String thisAuthorized: this.authorized) {
+            authorizedCollection.add(new Authorized(thisAuthorized));
+        }
+        return authorizedCollection;
     }
 
 

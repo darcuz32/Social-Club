@@ -1,8 +1,6 @@
 package controller;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.controls.RecursiveTreeItem;
+import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,6 +9,8 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Club;
 import model.Partner;
@@ -28,6 +28,9 @@ public class AffiliatePartnerController {
 
     @FXML
     private JFXButton btnAffiliatePartner;
+
+    @FXML
+    private StackPane stackPane;
 
     private PartnersController partnersController;
 
@@ -68,16 +71,14 @@ public class AffiliatePartnerController {
         try {
             club.affiliatePartner(id,name);
         }catch (Exception e){
-            JOptionPane.showMessageDialog(null,e.getMessage());
+            callExceptionDialog(e);
             return;
         }
 
 
-        ObservableList<Partner> partners = FXCollections.observableArrayList(club.getPartners());
-        final TreeItem<Partner> root = new RecursiveTreeItem<>(partners, RecursiveTreeObject::getChildren);
-        partnersController.getPartnersTable().setRoot(root);
-        partnersController.getPartnersTable().setShowRoot(false);
+        partnersController.fillPartnersTable();
         ((Stage) txtName.getScene().getWindow()).close();
+        partnersController.handleRemoveFocus();
     }
 
     public void handleReleasedName(){
@@ -88,8 +89,36 @@ public class AffiliatePartnerController {
         txtId.setStyle("");
     }
 
+    public void callExceptionDialog(Exception e){
+        JFXDialogLayout content = new JFXDialogLayout();
+        Text headerText = new Text("Error");
+        headerText.getStyleClass().add("dialog-text");
+        content.setHeading(headerText);
+        Text msgText = new Text(e.getMessage());
+        msgText.getStyleClass().add("dialog-text");
+        content.setBody(msgText);
+        stackPane.autosize();
+        JFXDialog dialog = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.CENTER);
+        JFXButton button = new JFXButton("Ok");
+        content.getStyleClass().add("background");
+        content.getStyleClass().add("dialog");
+        button.getStyleClass().add("btn");
+        button.setOnAction(event -> {
+            Parent parent = txtName.getParent();
+            stackPane.setVisible(false);
+            parent.requestFocus();
+            dialog.close();
+        });
+        content.setActions(button);
+        stackPane.setVisible(true);
+        Parent parent = txtId.getParent();
+        parent.requestFocus();
+        dialog.show();
+    }
+
     public void handleRemoveFocus(){
         Parent parent = txtId.getParent();
+        stackPane.setVisible(false);
         parent.requestFocus();
     }
 

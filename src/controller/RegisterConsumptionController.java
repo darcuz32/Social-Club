@@ -1,5 +1,8 @@
 package controller;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -14,16 +17,16 @@ import javax.swing.*;
 
 public class RegisterConsumptionController {
     @FXML
-    private ComboBox comboBoxName;
+    private JFXComboBox comboBoxName;
 
     @FXML
-    private TextField txtConcept;
+    private JFXTextField txtConcept;
 
     @FXML
-    private TextField txtAmount;
+    private JFXTextField txtAmount;
 
     @FXML
-    private Button btnRegisterConsumption;
+    private JFXButton btnRegisterConsumption;
 
     public InvoicesController invoicesController;
 
@@ -40,18 +43,23 @@ public class RegisterConsumptionController {
         try{
             Double.parseDouble(amount);
             if (concept.isEmpty() && amount.isEmpty()){
-                txtConcept.setStyle("-fx-text-box-border: red");
-                txtAmount.setStyle("-fx-text-box-border: red");
+                txtConcept.setStyle("-jfx-focus-color: red");
+                txtConcept.setStyle("-jfx-unfocus-color: red");
+                txtAmount.setStyle("-jfx-focus-color: red");
+                txtAmount.setStyle("-jfx-unfocus-color: red");
                 return;
             }else if (concept.isEmpty()){
-                txtConcept.setStyle("-fx-text-box-border: red");
+                txtConcept.setStyle("-jfx-focus-color: red");
+                txtConcept.setStyle("-jfx-unfocus-color: red");
                 return;
             }else if(amount.isEmpty() || Double.parseDouble(amount) < 0){
-                txtAmount.setStyle("-fx-text-box-border: red");
+                txtAmount.setStyle("-jfx-focus-color: red");
+                txtAmount.setStyle("-jfx-unfocus-color: red");
                 return;
             }
         }catch (NumberFormatException e){
-            txtAmount.setStyle("-fx-text-box-border: red");
+            txtAmount.setStyle("-jfx-focus-color: red");
+            txtAmount.setStyle("-jfx-unfocus-color: red");
             return;
         }
 
@@ -60,6 +68,7 @@ public class RegisterConsumptionController {
         invoicesController.fillTableInvoices(name);
         invoicesController.setComboBoxValue(name);
         ((Stage) txtAmount.getScene().getWindow()).close();
+        invoicesController.handleRemoveFocus();
     }
 
     public void handleReleasedAmount(){

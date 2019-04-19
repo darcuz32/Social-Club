@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="318.0" prefWidth="542.0" styleClass="background" stylesheets="@../styles/MasterStyle.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AboutController">
+   <children>
+      <VBox layoutX="53.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="279.0" prefWidth="202.0" spacing="20.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0">
+         <children>
+            <Label text="Acerca de ">
+               <VBox.margin>
+                  <Insets top="30.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="System Bold" size="36.0" />
+               </font>
+            </Label>
+            <HBox prefHeight="5.0" prefWidth="434.0" spacing="20.0">
+               <children>
+                  <ImageView fitHeight="97.0" fitWidth="107.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/cs.png" />
+                     </image>
+                  </ImageView>
+                  <VBox prefHeight="117.0" prefWidth="322.0" spacing="10.0">
+                     <children>
+                        <Label text="Club Social">
+                           <font>
+                              <Font name="System Bold" size="24.0" />
+                           </font>
+                        </Label>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="dialog-text" text="Proyecto final para la materia de Programación Orientada a Objetos" wrappingWidth="322.13671875" />
+                        <Label text="Roberto Garcia ">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="10.0" layoutY="113.0" text="Versión 1.4.1">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <JFXButton fx:id="btnCloseAbout" layoutX="418.0" layoutY="279.0" onAction="#handleDoneCloseAbout" styleClass="btn" text="Cerrar" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="50.0" />
+   </children>
+</AnchorPane>

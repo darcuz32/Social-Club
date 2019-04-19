@@ -1,50 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#handleRemoveFocus" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AuthorizedController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#handleRemoveFocus" prefHeight="400.0" prefWidth="600.0" styleClass="background" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AuthorizedController">
    <children>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="40.0">
+      <AnchorPane prefHeight="200.0" prefWidth="540.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="40.0">
          <children>
             <Label layoutX="-1.0" text="Autorizados" AnchorPane.leftAnchor="-1.0" AnchorPane.topAnchor="0.0">
                <font>
                   <Font name="System Bold" size="26.0" />
                </font>
             </Label>
-            <HBox layoutX="170.0" layoutY="120.0" spacing="20.0" style="-fx-fill-height: true;" AnchorPane.bottomAnchor="34.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
+            <HBox layoutX="170.0" layoutY="120.0" spacing="20.0" style="-fx-fill-height: true;" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
                <children>
                   <VBox prefHeight="300.0" prefWidth="267.0" spacing="10.0" style="-fx-fill-width: true;" HBox.hgrow="ALWAYS">
                      <children>
-                        <TextField fx:id="txtSearchPartner" onInputMethodTextChanged="#handleSearchPartner" onKeyPressed="#handleSearchPartner" onKeyReleased="#handleSearchPartner" onKeyTyped="#handleSearchPartner" promptText="Buscar socio" />
-                        <TableView fx:id="partnersAuthorizedTable" prefHeight="293.0" prefWidth="261.0" VBox.vgrow="ALWAYS" />
+                        <JFXTextField fx:id="txtSearchPartner" minHeight="-Infinity" minWidth="-Infinity" onInputMethodTextChanged="#handleSearchPartner" onKeyPressed="#handleSearchPartner" onKeyReleased="#handleSearchPartner" onKeyTyped="#handleSearchPartner" prefHeight="33.0" prefWidth="261.0" promptText="Buscar socio" styleClass="input" VBox.vgrow="ALWAYS">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </JFXTextField>
+                        <JFXTreeTableView fx:id="partnersAuthorizedTable" prefWidth="261.0" VBox.vgrow="ALWAYS" />
                      </children>
                   </VBox>
                   <VBox prefHeight="300.0" prefWidth="266.0" spacing="10.0" style="-fx-fill-width: true;" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label text="Lista de autorizados ">
+                        <Label minHeight="-Infinity" minWidth="-Infinity" prefHeight="33.0" prefWidth="261.0" text="Lista de autorizados " VBox.vgrow="ALWAYS">
                            <font>
                               <Font size="18.0" />
                            </font>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
                         </Label>
-                        <TableView fx:id="authorizedTable" prefHeight="284.0" prefWidth="260.0" VBox.vgrow="ALWAYS" />
+                        <JFXTreeTableView fx:id="authorizedTable" prefWidth="260.0" VBox.vgrow="ALWAYS" />
                      </children>
                   </VBox>
                </children>
             </HBox>
-            <Button fx:id="btnAddAuthorized" layoutX="474.0" layoutY="306.0" mnemonicParsing="false" onAction="#handleAddAuthorized" text="Agregar autorizado" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <JFXButton fx:id="btnAddAuthorized" buttonType="RAISED" layoutX="369.0" layoutY="315.0" onAction="#handleAddAuthorized" styleClass="btn" text="Agregar autorizado" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </JFXButton>
          </children>
       </AnchorPane>
-      <MenuBar layoutX="242.0" layoutY="175.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <MenuBar layoutX="242.0" layoutY="175.0" styleClass="header" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <menus>
             <Menu mnemonicParsing="false" text="Secciones">
                <items>
@@ -53,13 +67,21 @@
                   <MenuItem fx:id="btnInvoicesMenu" mnemonicParsing="false" onAction="#handleInvoicesMenu" text="Facturas" />
                </items>
             </Menu>
-            <Menu mnemonicParsing="false" text="Opciones" />
+            <Menu mnemonicParsing="false" text="Opciones">
+               <items>
+                  <MenuItem fx:id="btnInvoicesMenu1" mnemonicParsing="false" text="Configuración" />
+               </items></Menu>
             <Menu mnemonicParsing="false" text="Ayuda">
                <items>
-                  <MenuItem mnemonicParsing="false" text="Información" />
+                  <MenuItem fx:id="btnAbout" mnemonicParsing="false" onAction="#handleAbout" text="Acerca de" />
                </items>
             </Menu>
          </menus>
       </MenuBar>
+      <StackPane fx:id="stackPane" layoutX="78.0" layoutY="96.0" prefHeight="247.0" prefWidth="454.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
    </children>
+
+   <stylesheets>
+      <URL value="@../styles/MasterStyle.css" />
+   </stylesheets>
 </AnchorPane>

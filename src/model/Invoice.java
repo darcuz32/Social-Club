@@ -1,8 +1,10 @@
 package model;
 
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+
 import java.text.NumberFormat;
 
-public class Invoice {
+public class Invoice extends RecursiveTreeObject<Invoice> {
 
     //instance variables
     private String name;

@@ -1,5 +1,6 @@
 package controller;
 
+import com.jfoenix.controls.JFXButton;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -24,10 +25,10 @@ public class PayInvoiceController {
     private Label lblAmount;
 
     @FXML
-    private Button btnPayInvoice;
+    private JFXButton btnPayInvoice;
 
     @FXML
-    private Button btnCancelPayment;
+    private JFXButton btnCancelPayment;
 
     public InvoicesController invoicesController;
 
@@ -40,18 +41,12 @@ public class PayInvoiceController {
     }
 
     public void handleDonePayInvoice(){
-        Iterator<Invoice> iterInvoices = partner.getInvoices().iterator();
 
-        while (iterInvoices.hasNext()) {
-            Invoice thisInvoice = iterInvoices.next();
-
-            if (thisInvoice.equals(invoice)) {
-                iterInvoices.remove();
-            }
-        }
+        partner.getInvoices().removeIf(thisInvoice -> thisInvoice.equals(invoice));
         invoicesController.fillTableInvoices("Todos");
         invoicesController.setComboBoxValue("Todos");
         ((Stage) lblPartner.getScene().getWindow()).close();
+        invoicesController.handleRemoveFocus();
     }
 
     public void handleCancelPayment(){
