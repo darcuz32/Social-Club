@@ -1,11 +1,9 @@
 package controller;
 
 import com.jfoenix.controls.*;
-import com.jfoenix.controls.cells.editors.TextFieldEditorBuilder;
-import com.jfoenix.controls.cells.editors.base.GenericEditableTreeTableCell;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
-import javafx.beans.property.ReadOnlyIntegerWrapper;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -19,6 +17,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import model.Authorized;
 import model.Club;
 import model.Invoice;
 import model.Partner;
@@ -27,14 +26,14 @@ import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
-public class PartnersController {
+public class AuthorizedController {
+    @FXML
+    private JFXTreeTableView<Partner> partnersAuthorizedTable;
 
     @FXML
-    private JFXTreeTableView<Partner> partnersTable;
-
-    @FXML
-    JFXButton btnAffiliatePartner = new JFXButton("JFoenix Button");
+    private JFXTreeTableView<Authorized> authorizedTable;
 
     @FXML
     private MenuItem btnPartnersMenu;
@@ -46,13 +45,13 @@ public class PartnersController {
     private MenuItem btnInvoicesMenu;
 
     @FXML
-    private Button btnShow;
-
-    @FXML
-    private StackPane stackPane;
+    private JFXButton btnAddAuthorized;
 
     @FXML
     private JFXTextField txtSearchPartner;
+
+    @FXML
+    private StackPane stackPane;
 
     public Club club;
 
@@ -60,57 +59,71 @@ public class PartnersController {
 
     public Stage primaryStage;
 
+    public Partner partner;
+
     public void initialize(){
 
-        JFXTreeTableColumn<Partner, String> columnId= new JFXTreeTableColumn<>("Cédula");
+        JFXTreeTableColumn<Partner, String> columnId = new JFXTreeTableColumn<>("Cédula");
         columnId.setCellValueFactory((TreeTableColumn.CellDataFeatures<Partner, String> param) ->{
             if(columnId.validateValue(param)) return new SimpleStringProperty(param.getValue().getValue().getId());
             else return columnId.getComputedValue(param);
         });
-        columnId.prefWidthProperty().bind(partnersTable.widthProperty().multiply(0.20));
+        columnId.prefWidthProperty().bind(partnersAuthorizedTable.widthProperty().multiply(0.2));
         columnId.setStyle("-fx-alignment: CENTER;");
         columnId.getStyleClass().add("columns");
 
-        JFXTreeTableColumn<Partner, String> columnName= new JFXTreeTableColumn<>("Nombre");
+        JFXTreeTableColumn<Partner, String> columnName = new JFXTreeTableColumn<>("Nombre");
         columnName.setCellValueFactory((TreeTableColumn.CellDataFeatures<Partner, String> param) ->{
             if(columnName.validateValue(param)) return new SimpleStringProperty(param.getValue().getValue().getName());
             else return columnName.getComputedValue(param);
         });
-        columnName.prefWidthProperty().bind(partnersTable.widthProperty().multiply(0.5));
+        columnName.prefWidthProperty().bind(partnersAuthorizedTable.widthProperty().multiply(0.8));
         columnName.setStyle("-fx-alignment: CENTER;");
         columnName.getStyleClass().add("columns");
 
-        JFXTreeTableColumn<Partner, String> columnAuthorized = new JFXTreeTableColumn<>("Autorizados");
-        columnAuthorized.setCellValueFactory((TreeTableColumn.CellDataFeatures<Partner, String> param) ->{
-            if(columnAuthorized.validateValue(param)) return new SimpleStringProperty(String.valueOf(param.getValue().getValue().getAuthorizedSize()));
-            else return columnAuthorized.getComputedValue(param);
-        });
-        columnAuthorized.prefWidthProperty().bind(partnersTable.widthProperty().multiply(0.15));
-        columnAuthorized.setStyle("-fx-alignment: CENTER;");
-        columnAuthorized.getStyleClass().add("columns");
+        partnersAuthorizedTable.getColumns().addAll(columnId,columnName);
 
-        JFXTreeTableColumn<Partner, String> columnInvoices = new JFXTreeTableColumn<>("Facturas");
-        columnInvoices.setCellValueFactory((TreeTableColumn.CellDataFeatures<Partner, String> param) ->{
-            if(columnInvoices.validateValue(param)) return new SimpleStringProperty(String.valueOf(param.getValue().getValue().getInvoicesSize()));
-            else return columnInvoices.getComputedValue(param);
+        JFXTreeTableColumn<Authorized, String> columnAuthorizedName = new JFXTreeTableColumn<>("Nombre");
+        columnAuthorizedName.setCellValueFactory((TreeTableColumn.CellDataFeatures<Authorized, String> param) ->{
+            if(columnAuthorizedName.validateValue(param)) return new SimpleStringProperty(param.getValue().getValue().getName());
+            else return columnAuthorizedName.getComputedValue(param);
         });
-        columnInvoices.prefWidthProperty().bind(partnersTable.widthProperty().multiply(0.147));
-        columnInvoices.setStyle("-fx-alignment: CENTER;");
-        columnInvoices.getStyleClass().add("columns");
+        columnAuthorizedName.prefWidthProperty().bind(authorizedTable.widthProperty().multiply(1));
+        columnAuthorizedName.setStyle("-fx-alignment: CENTER;");
+        columnAuthorizedName.getStyleClass().add("columns");
 
-        partnersTable.getColumns().setAll(columnId, columnName, columnAuthorized, columnInvoices);
+        authorizedTable.getColumns().add(columnAuthorizedName);
+
+        partnersAuthorizedTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null){
+                fillTableAuthorized(newSelection.getValue());
+            }else{
+                fillTableAuthorized(null);
+            }
+        });
 
 
     }
 
-    public void handleAffiliatePartner(){
+    public void handleSearchPartner(){
+        String txtToSearch = txtSearchPartner.getText();
+        clubToSearch = club.searchPartner(txtToSearch);
+        partnersAuthorizedTable.setRoot(null);
+        ObservableList<Partner> partners = FXCollections.observableArrayList(clubToSearch.getPartners());
+        final TreeItem<Partner> root = new RecursiveTreeItem<>(partners, RecursiveTreeObject::getChildren);
+        partnersAuthorizedTable.setRoot(root);
+        partnersAuthorizedTable.setShowRoot(false);
+    }
+
+    public void handleAddAuthorized(){
         try {
-            URL url = getClass().getClassLoader().getResource("resources/views/AffiliatePartner.fxml");
+            club.checkPartner(partner);
+            URL url = getClass().getClassLoader().getResource("resources/views/AddAuthorized.fxml");
             FXMLLoader fxmlLoader = new FXMLLoader(url);
             Parent parent = fxmlLoader.load();
-            AffiliatePartnerController affiliatePartnerController = fxmlLoader.getController();
-            affiliatePartnerController.setPartnersController(this);
-            affiliatePartnerController.setClub(club);
+            AddAuthorizedController addAuthorizedController = fxmlLoader.getController();
+            addAuthorizedController.setAuthorizedController(this);
+            addAuthorizedController.setPartner(partner);
             Scene scene = new Scene(parent);
             Stage dialog = new Stage();
             dialog.initModality(Modality.APPLICATION_MODAL);
@@ -120,36 +133,24 @@ public class PartnersController {
             dialog.show();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (Exception e) {
+            callExceptionDialog(e);
         }
     }
 
-    public void handleSearchPartner(){
-        String txtToSearch = txtSearchPartner.getText();
-        clubToSearch = club.searchPartner(txtToSearch);
-        partnersTable.setRoot(null);
-        ObservableList<Partner> partners = FXCollections.observableArrayList(clubToSearch.getPartners());
-        final TreeItem<Partner> root = new RecursiveTreeItem<>(partners, RecursiveTreeObject::getChildren);
-        partnersTable.setRoot(root);
-        partnersTable.setShowRoot(false);
-    }
-
-    public void handleShow(){
-        JOptionPane.showMessageDialog(null, club.toString());
-    }
-
-    public void handleAuthorizedMenu(){
+    public void handlePartnersMenu(){
         try {
-            URL url = getClass().getClassLoader().getResource("resources/views/Authorized.fxml");
+            URL url = getClass().getClassLoader().getResource("resources/views/SocialClub.fxml");
             FXMLLoader fxmlLoader = new FXMLLoader(url);
             Parent parent;
             parent = fxmlLoader.load();
-            AuthorizedController authorizedController = fxmlLoader.getController();
-            authorizedController.setClub(club);
-            authorizedController.setPrimaryStage(primaryStage);
+            PartnersController partnersController = fxmlLoader.getController();
+            partnersController.setClub(club);
+            partnersController.setPrimaryStage(primaryStage);
             primaryStage.setScene(new Scene(parent, primaryStage.getScene().getWidth(), primaryStage.getScene().getHeight()));
             parent.requestFocus();
 
-            authorizedController.fillPartnersTable();
+            partnersController.fillPartnersTable();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -171,6 +172,7 @@ public class PartnersController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     public void handleAbout(){
@@ -194,11 +196,23 @@ public class PartnersController {
 
     }
 
+    public void fillTableAuthorized(Partner partner){
+        authorizedTable.setRoot(null);
+        this.partner = partner;
+        if (partner != null){
+            ObservableList<Authorized> authorized = FXCollections.observableArrayList(this.partner.getAuthorizedAsObject());
+            final TreeItem<Authorized> root = new RecursiveTreeItem<>(authorized, RecursiveTreeObject::getChildren);
+            authorizedTable.setRoot(root);
+            authorizedTable.setShowRoot(false);
+        }
+
+    }
+
     public void fillPartnersTable(){
         ObservableList<Partner> partners = FXCollections.observableArrayList(club.getPartners());
         final TreeItem<Partner> root = new RecursiveTreeItem<>(partners, RecursiveTreeObject::getChildren);
-       partnersTable.setRoot(root);
-       partnersTable.setShowRoot(false);
+        partnersAuthorizedTable.setRoot(root);
+        partnersAuthorizedTable.setShowRoot(false);
     }
 
     public void callExceptionDialog(Exception e){
@@ -228,9 +242,9 @@ public class PartnersController {
         dialog.show();
     }
 
-
     public void handleRemoveFocus(){
-        Parent parent = partnersTable.getParent();
+        Parent parent = txtSearchPartner.getParent();
+        stackPane.setVisible(false);
         parent.requestFocus();
     }
 

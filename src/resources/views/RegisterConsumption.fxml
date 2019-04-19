@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#handleRemoveFocus" prefHeight="324.0" prefWidth="434.0" spacing="20.0" styleClass="background" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RegisterConsumptionController">
+   <children>
+      <Label text="Registrar consumo">
+         <VBox.margin>
+            <Insets top="30.0" />
+         </VBox.margin>
+         <font>
+            <Font name="System Bold" size="36.0" />
+         </font>
+      </Label>
+      <HBox prefHeight="5.0" prefWidth="434.0" spacing="20.0">
+         <children>
+            <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="183.0" text="Nombre" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin>
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <JFXComboBox fx:id="comboBoxName" prefHeight="25.0" prefWidth="445.0" styleClass="input" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets right="50.0" />
+               </HBox.margin>
+            </JFXComboBox>
+         </children>
+      </HBox>
+      <HBox layoutX="10.0" layoutY="158.0" prefHeight="21.0" prefWidth="434.0" spacing="20.0">
+         <children>
+            <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="183.0" text="Concepto" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin>
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <JFXTextField fx:id="txtConcept" onInputMethodTextChanged="#handleReleasedConcept" onKeyPressed="#handleReleasedConcept" onKeyReleased="#handleReleasedConcept" onKeyTyped="#handleReleasedConcept" prefHeight="25.0" prefWidth="445.0" styleClass="input" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets right="50.0" />
+               </HBox.margin>
+            </JFXTextField>
+         </children>
+      </HBox>
+      <HBox layoutX="10.0" layoutY="113.0" prefHeight="21.0" prefWidth="434.0" spacing="20.0">
+         <children>
+            <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="183.0" text="Monto" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin>
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <JFXTextField fx:id="txtAmount" onInputMethodTextChanged="#handleReleasedAmount" onKeyPressed="#handleReleasedAmount" onKeyReleased="#handleReleasedAmount" onKeyTyped="#handleReleasedAmount" prefHeight="25.0" prefWidth="445.0" styleClass="input" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets right="50.0" />
+               </HBox.margin>
+            </JFXTextField>
+         </children>
+      </HBox>
+      <JFXButton fx:id="btnRegisterConsumption" buttonType="RAISED" onAction="#handleDoneRegisterConsumption" styleClass="btn" text="Registrar" VBox.vgrow="ALWAYS">
+         <font>
+            <Font size="18.0" />
+         </font>
+         <VBox.margin>
+            <Insets top="20.0" />
+         </VBox.margin>
+      </JFXButton>
+   </children>
+
+   <stylesheets>
+      <URL value="@../styles/MasterStyle.css" />
+   </stylesheets>
+</VBox>

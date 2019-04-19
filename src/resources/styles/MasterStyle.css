@@ -1,0 +1,181 @@
+*{
+   -fx-text-fill:white !important;
+}
+
+.background{
+    -fx-background-color:#212121;
+    -fx-border-color:#1c1c1c;
+    -fx-text-fill:white !important;
+}
+
+.header{
+    -fx-background-color:#242424;
+    -fx-border-color:#1c1c1c;
+}
+
+.input{
+   -jfx-focus-color:white;
+   -jfx-unfocus-color:#333333;
+}
+
+.jfx-tree-table-view,
+ .table-row{
+    -fx-background-color:#242424;
+    -fx-border-color:#1c1c1c;
+}
+
+.jfx-tree-table-view > .virtual-flow > .clipped-container > .sheet > .tree-table-row-cell{
+    -fx-background-color: #242424;
+}
+
+.columns{
+    -fx-border-color:#1c1c1c !important;
+}
+
+.jfx-tree-table-view > .virtual-flow > .clipped-container > .sheet > .tree-table-row-cell:filled:selected {
+   -fx-background-color: #333333;
+}
+
+.menu:hover,
+.menu:showing, /* selects Menu in MenuBar, if shown */
+.menu-item:focused {
+    -fx-background-color: #333333;
+    -fx-border-color:#1c1c1c;
+}
+
+.menu-item .label {
+    -fx-text-fill: white;
+}
+
+.menu-item:focused {
+     -fx-background-color: #333333;
+}
+
+.menu-item:focused .label {
+    -fx-text-fill: red;
+}
+
+.context-menu {
+    -fx-skin: "com.sun.javafx.scene.control.skin.ContextMenuSkin";
+    -fx-background-color: #242424;
+    -fx-background-insets: 0, 1, 2;
+    -fx-background-radius: 0 6 6 6, 0 5 5 5, 0 4 4 4;
+/*    -fx-padding: 0.666667em 0.083333em 0.666667em 0.083333em;  8 1 8 1 */
+    -fx-padding: 0.333333em 0.083333em 0.666667em 0.083333em; /* 4 1 8 1 */
+}
+
+.btn{
+    -fx-background-color:#242424;
+    -fx-border-color:#1c1c1c;
+    -fx-text-fill:white;
+    -jfx-rippler-fill: black;
+    -fx-font-size:18px;
+    -jfx-button-type: RAISED;
+}
+
+.btn:hover{
+    -fx-background-color:#333333;
+    -fx-border-color:#1c1c1c;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: #242424;
+}
+
+.combo-box-popup .list-view .list-cell{
+    -fx-background-color: #242424;
+}
+
+.combo-box-popup .list-view .list-cell:filled:selected, .combo-box-popup .list-view .list-cell:filled:selected:hover{
+    -fx-background-color: #333333;
+}
+
+.combo-box-popup .list-view .list-cell:filled:hover{
+    -fx-background-color: #404040;
+}
+
+.combo-box-popup .list-view .jfx-list-cell .jfx-rippler {
+    -jfx-rippler-fill: black;
+}
+
+.jfx-button .jfx-rippler{
+      -jfx-rippler-fill:black;
+}
+
+.dialog-text {
+    -fx-fill: white;
+    -fx-font-size:18px;
+}
+
+
+.jfx-tree-table-view .scroll-bar:horizontal,
+ .scroll-bar:horizontal .increment-arrow ,
+ .scroll-bar:horizontal .decrement-arrow{
+    -fx-min-width: 0;
+    -fx-pref-width: 0;
+    -fx-max-width: 0;
+
+    -fx-min-height: 0;
+    -fx-pref-height: 0;
+    -fx-max-height: 0;
+}
+
+
+/****************************************************************
+
+  ScrollBar Skin
+
+****************************************************************/
+.scroll-bar:vertical{
+ -fx-background-color: #404040;
+ -fx-background-radius: 2em;
+}
+
+.scroll-bar:vertical .track {
+ -fx-background-color: transparent;
+ -fx-border-color:transparent;
+ -fx-background-radius: 2em;
+}
+.scroll-bar:vertical .track-background{
+ -fx-background-color: transparent;
+ -fx-background-insets: 0;
+ -fx-background-radius: 2em;
+}
+
+.scroll-bar:vertical .thumb {
+ -fx-background-color: #242424;
+ -fx-background-insets: 0 4 0 4;
+ -fx-background-radius: 2em;
+}
+
+.scroll-bar:vertical .thumb:hover {
+ -fx-background-color:#333333;
+}
+
+.scroll-bar:vertical .thumb:pressed {
+ -fx-background-color: #212121;
+}
+.scroll-bar:vertical .increment-button, .scroll-bar:vertical .decrement-button {
+ -fx-background-color:transparent;
+ -fx-background-radius: 2em;
+ -fx-padding: 5;
+}
+
+.scroll-bar:vertical .increment-arrow {
+ -fx-background-color: #404040;
+ -fx-border-color: #1c1c1c;
+ -fx-shape: "M 0 0 L 4 8 L 8 0 Z";
+ -fx-padding: 0.25em;
+ -fx-rotate: 0;
+}
+
+.scroll-bar:vertical .decrement-arrow {
+ -fx-background-color: #404040;
+ -fx-border-color: #1c1c1c;
+ -fx-shape: "M 0 0 L 4 8 L 8 0 Z";
+ -fx-padding: 0.25em;
+ -fx-rotate: -180;
+}
+.scroll-bar:vertical:focused{
+ -fx-background-color: transparent,#1c1c1c,#1c1c1c;
+}

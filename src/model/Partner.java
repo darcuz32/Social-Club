@@ -1,8 +1,12 @@
 package model;
 
-import java.util.ArrayList;
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 
-public class Partner {
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Partner extends RecursiveTreeObject<Partner> {
 
     //instance variables
     private String id;
@@ -14,7 +18,14 @@ public class Partner {
         this.id = id;
         this.name = name;
         this.authorized = new ArrayList();
-        this.invoices = new ArrayList();
+        this.invoices = new ArrayList<>();
+    }
+
+    public Partner(String id, String name, ArrayList<String> authorized, ArrayList<Invoice> invoices) {
+        this.id = id;
+        this.name = name;
+        this.authorized = authorized;
+        this.invoices = invoices;
     }
 
     public String getId() {
@@ -33,15 +44,26 @@ public class Partner {
         this.name = name;
     }
 
-    public ArrayList getInvoices() {
+    public ArrayList<Invoice> getInvoices() {
         return invoices;
     }
 
-    public void setInvoices(Invoice invoices) {
-        this.invoices.add(invoices);
+    public ArrayList<Invoice> getInvoicesFiltered(String client) {
+        ArrayList<Invoice> invoicesToShow = new ArrayList<>();
+        Double totalAmount = 0.0;
+        for (Invoice thisInvoice: this.invoices){
+            if (thisInvoice.getName().equals(client) || client.equals("Todos")) {
+                invoicesToShow.add(thisInvoice);
+                totalAmount += thisInvoice.getAmount();
+            }
+        }
+        if (totalAmount > 0) {
+            invoicesToShow.add(new Invoice("", "Saldo total", totalAmount));
+        }
+        return invoicesToShow;
     }
 
-    public ArrayList getAuthorized() {
+    public ArrayList<String> getAuthorized() {
         return authorized;
     }
 
@@ -53,13 +75,51 @@ public class Partner {
         return invoices.size();
     }
 
-    public void setAuthorized(String authorized) {
-        this.authorized.add(authorized);
+    public String validateAuthorized(String name){
+        String validAuthorized = null;
+        for (String thisAuthorized: authorized) {
+            String patternString = ".*"+name.trim()+".*";
+
+            Pattern pattern = Pattern.compile(patternString, Pattern.CASE_INSENSITIVE);
+            Matcher matcherAuthorized = pattern.matcher(thisAuthorized);
+
+            boolean matchesAuthorized = matcherAuthorized.matches();
+            if (matchesAuthorized){
+                validAuthorized = thisAuthorized;
+            }
+        }
+        return  validAuthorized;
     }
 
-    public void addAuthorized(String nameAuthorized){
-
+    public void addAuthorized(String name) throws Exception{
+        String authorized = validateAuthorized(name);
+        if (authorized == null) {
+            this.authorized.add(name);
+        }else{
+            throw new Exception("Esta persona ya se encuentra\n registrada como autorizada\n de este socio.");
+        }
     }
+
+    public void addInvoice(String name, String concept, Double amount){
+        Invoice invoice = new Invoice(name, concept, amount);
+        this.invoices.add(invoice);
+    }
+
+    public void checkInvoice(Invoice invoice) throws Exception{
+        if (invoice == null || (invoice.getName() == "" &&  invoice.getConcept() == "Saldo total")){
+            throw new Exception("Seleccione una factura.");
+        }
+    }
+
+    public  ArrayList<Authorized> getAuthorizedAsObject(){
+        ArrayList<Authorized> authorizedCollection = new ArrayList<>();
+        for (String thisAuthorized: this.authorized) {
+            authorizedCollection.add(new Authorized(thisAuthorized));
+        }
+        return authorizedCollection;
+    }
+
+
 
     @Override
     public String toString() {
@@ -68,7 +128,7 @@ public class Partner {
                 ", name='" + name + '\'' +
                 ", invoices=" + invoices.toString() +
                 ", invoices size=" + invoices.size() +
-                ", authorized=" + authorized.size() +
+                ", authorized=" + authorized +
                 '}';
     }
 }

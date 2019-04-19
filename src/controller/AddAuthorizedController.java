@@ -1,14 +1,14 @@
 package controller;
 
-import com.jfoenix.controls.*;
-import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDialog;
+import com.jfoenix.controls.JFXDialogLayout;
+import com.jfoenix.controls.JFXTextField;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TreeItem;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -16,76 +16,51 @@ import model.Club;
 import model.Partner;
 
 import javax.swing.*;
-import java.util.ArrayList;
 
-public class AffiliatePartnerController {
-
+public class AddAuthorizedController {
     @FXML
     private JFXTextField txtName;
 
     @FXML
-    private JFXTextField txtId;
+    private Label lblPartner;
 
     @FXML
-    private JFXButton btnAffiliatePartner;
+    private JFXButton btnAddAuthorized;
 
     @FXML
     private StackPane stackPane;
 
-    private PartnersController partnersController;
+    public AuthorizedController authorizedController;
 
-    public Club club;
+    public Partner partner;
 
     public void initialize(){
 
     }
 
-    public void handleDoneAffiliatePartner(){
+    public void handleDoneAddAuthorized(){
         String name = txtName.getText();
-        String id = txtId.getText();
 
-        if (name.isEmpty() && id.isEmpty()){
-            txtName.setStyle("-jfx-focus-color: red");
-            txtId.setStyle("-jfx-focus-color: red");
-            txtName.setStyle("-jfx-unfocus-color: red");
-            txtId.setStyle("-jfx-unfocus-color: red");
-            return;
-        }else if (id.isEmpty()){
-            txtId.setStyle("-jfx-focus-color: red");
-            txtId.setStyle("-jfx-unfocus-color: red");
-            return;
-        }else if(name.isEmpty()){
+        if (name.isEmpty()){
             txtName.setStyle("-jfx-focus-color: red");
             txtName.setStyle("-jfx-unfocus-color: red");
-            return;
-        }
-
-        try{
-            Integer.parseInt(id);
-        }catch (NumberFormatException e){
-            txtId.setStyle("-jfx-focus-color: red");
-            txtId.setStyle("-jfx-unfocus-color: red");
             return;
         }
 
         try {
-            club.affiliatePartner(id,name);
+            partner.addAuthorized(name);
         }catch (Exception e){
             callExceptionDialog(e);
             return;
         }
 
-        partnersController.fillPartnersTable();
+        authorizedController.fillTableAuthorized(partner);
         ((Stage) txtName.getScene().getWindow()).close();
-        partnersController.handleRemoveFocus();
+        authorizedController.handleRemoveFocus();
     }
 
     public void handleReleasedName(){
         txtName.setStyle("");
-    }
-
-    public void handleReleasedId(){
-        txtId.setStyle("");
     }
 
     public void callExceptionDialog(Exception e){
@@ -110,23 +85,23 @@ public class AffiliatePartnerController {
         });
         content.setActions(button);
         stackPane.setVisible(true);
-        Parent parent = txtId.getParent();
+        Parent parent = txtName.getParent();
         parent.requestFocus();
         dialog.show();
     }
 
     public void handleRemoveFocus(){
-        Parent parent = txtId.getParent();
+        Parent parent = txtName.getParent();
         stackPane.setVisible(false);
         parent.requestFocus();
     }
 
-
-    public void setPartnersController(PartnersController partnersController) {
-        this.partnersController = partnersController;
+    public void setAuthorizedController(AuthorizedController authorizedController) {
+        this.authorizedController = authorizedController;
     }
 
-    public void setClub(Club club) {
-        this.club = club;
+    public void setPartner(Partner partner) {
+        this.partner = partner;
+        lblPartner.setText(partner.getName());
     }
 }
