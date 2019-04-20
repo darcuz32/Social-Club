@@ -4,7 +4,7 @@ import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 
 import java.text.NumberFormat;
 
-public class Invoice extends RecursiveTreeObject<Invoice> {
+public class Invoice extends RecursiveTreeObject<Invoice> implements java.io.Serializable  {
 
     //instance variables
     private String name;

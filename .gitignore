@@ -6,3 +6,6 @@ out/
 
 #Ignore file named 'Club social'
 Club social.iml
+
+#Ignore files tmp
+*.tmp

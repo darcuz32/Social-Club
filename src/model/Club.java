@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Club {
+public class Club  implements java.io.Serializable  {
 
     //instance variables
     private ArrayList<Partner> partners;

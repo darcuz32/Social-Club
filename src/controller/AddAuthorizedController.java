@@ -10,7 +10,12 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import model.Club;
 import model.Partner;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 public class AddAuthorizedController {
     @FXML
@@ -25,6 +30,8 @@ public class AddAuthorizedController {
     public AuthorizedController authorizedController;
 
     public Partner partner;
+
+    public Club club;
 
     public void initialize(){
 
@@ -41,6 +48,19 @@ public class AddAuthorizedController {
 
         try {
             partner.addAuthorized(name);
+            String filename = "club.tmp";
+
+            //Saving of object in a file
+            FileOutputStream file = new FileOutputStream(filename);
+            ObjectOutputStream out = new ObjectOutputStream(file);
+
+            // Method for serialization of object
+            out.writeObject(club);
+
+            out.close();
+            file.close();
+        }catch(IOException ex) {
+            System.out.println("IOException is caught\n"+ex.getMessage());
         }catch (Exception e){
             callExceptionDialog(e);
             return;
@@ -95,5 +115,9 @@ public class AddAuthorizedController {
     public void setPartner(Partner partner) {
         this.partner = partner;
         lblPartner.setText(partner.getName());
+    }
+
+    public void setClub(Club club) {
+        this.club = club;
     }
 }

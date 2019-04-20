@@ -50,6 +50,8 @@ public class InvoicesController {
 
     public Invoice invoice;
 
+    public String theme;
+
     public void initialize(){
 
         JFXTreeTableColumn<Partner, String> columnId = new JFXTreeTableColumn<>("Cédula");
@@ -140,6 +142,7 @@ public class InvoicesController {
             Parent parent = fxmlLoader.load();
             RegisterConsumptionController registerConsumptionController = fxmlLoader.getController();
             registerConsumptionController.setInvoicesController(this);
+            registerConsumptionController.setClub(club);
             registerConsumptionController.setPartner(partner);
             registerConsumptionController.fillComboBox(partner);
             Scene scene = new Scene(parent);
@@ -147,8 +150,11 @@ public class InvoicesController {
             dialog.initModality(Modality.APPLICATION_MODAL);
             dialog.getIcons().add(new Image("resources/images/cs.png"));
             dialog.setScene(scene);
+            dialog.getScene().getStylesheets().clear();
+            dialog.getScene().getStylesheets().add("resources/styles/"+theme);
             dialog.setResizable(false);
             dialog.show();
+            handleRemoveFocus();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -165,6 +171,7 @@ public class InvoicesController {
             Parent parent = fxmlLoader.load();
             PayInvoiceController payInvoiceController = fxmlLoader.getController();
             payInvoiceController.setInvoicesController(this);
+            payInvoiceController.setClub(club);
             payInvoiceController.setPartner(partner);
             payInvoiceController.setInvoice(invoice);
             Scene scene = new Scene(parent);
@@ -172,9 +179,12 @@ public class InvoicesController {
             dialog.initModality(Modality.APPLICATION_MODAL);
             dialog.getIcons().add(new Image("resources/images/cs.png"));
             dialog.setScene(scene);
+            dialog.getScene().getStylesheets().clear();
+            dialog.getScene().getStylesheets().add("resources/styles/"+theme);
             parent.requestFocus();
             dialog.setResizable(false);
             dialog.show();
+            handleRemoveFocus();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -186,12 +196,14 @@ public class InvoicesController {
         try {
             URL url = getClass().getClassLoader().getResource("resources/views/SocialClub.fxml");
             FXMLLoader fxmlLoader = new FXMLLoader(url);
-            Parent parent = null;
-            parent = fxmlLoader.load();
+            Parent parent = fxmlLoader.load();
             PartnersController partnersController = fxmlLoader.getController();
+            partnersController.theme = this.theme;
             partnersController.setClub(club);
             partnersController.setPrimaryStage(primaryStage);
             primaryStage.setScene(new Scene(parent, primaryStage.getScene().getWidth(), primaryStage.getScene().getHeight()));
+            primaryStage.getScene().getStylesheets().clear();
+            primaryStage.getScene().getStylesheets().add("resources/styles/"+theme);
             parent.requestFocus();
             partnersController.fillPartnersTable();
         } catch (IOException e) {
@@ -203,16 +215,48 @@ public class InvoicesController {
         try {
             URL url = getClass().getClassLoader().getResource("resources/views/Authorized.fxml");
             FXMLLoader fxmlLoader = new FXMLLoader(url);
-            Parent parent;
-            parent = fxmlLoader.load();
+            Parent parent  = fxmlLoader.load();
             AuthorizedController authorizedController = fxmlLoader.getController();
+            authorizedController.theme = this.theme;
             authorizedController.setClub(club);
             authorizedController.setPrimaryStage(primaryStage);
             primaryStage.setScene(new Scene(parent, primaryStage.getScene().getWidth(), primaryStage.getScene().getHeight()));
+            primaryStage.getScene().getStylesheets().clear();
+            primaryStage.getScene().getStylesheets().add("resources/styles/"+theme);
             parent.requestFocus();
             authorizedController.fillPartnersTable();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+    }
+
+    public void handleConfig(){
+        try {
+            URL url = getClass().getClassLoader().getResource("resources/views/Config.fxml");
+            FXMLLoader fxmlLoader = new FXMLLoader(url);
+            Parent parent = fxmlLoader.load();
+            Scene scene = new Scene(parent);
+            ConfigController configController = fxmlLoader.getController();
+            configController.theme = this.theme;
+            configController.setClub(club);
+            configController.setPrimaryStage(primaryStage);
+            configController.setInvoicesController(this);
+            Stage dialog = new Stage();
+            dialog.initModality(Modality.APPLICATION_MODAL);
+            dialog.getIcons().add(new Image("resources/images/cs.png"));
+            dialog.setScene(scene);
+            dialog.getScene().getStylesheets().clear();
+            dialog.getScene().getStylesheets().add("resources/styles/"+theme);
+            parent.requestFocus();
+            dialog.setResizable(false);
+            configController.setDialog(dialog);
+            dialog.show();
+            handleRemoveFocus();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            callExceptionDialog(e);
         }
 
     }
@@ -227,9 +271,12 @@ public class InvoicesController {
             dialog.initModality(Modality.APPLICATION_MODAL);
             dialog.getIcons().add(new Image("resources/images/cs.png"));
             dialog.setScene(scene);
+            dialog.getScene().getStylesheets().clear();
+            dialog.getScene().getStylesheets().add("resources/styles/"+theme);
             parent.requestFocus();
             dialog.setResizable(false);
             dialog.show();
+            handleRemoveFocus();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -261,7 +308,6 @@ public class InvoicesController {
 
     public void fillTableInvoices(Object clients){
         invoicesTable.setRoot(null);
-        Double totalAmount = 0.0;
         if (partner != null){
             ObservableList<Invoice> invoices = FXCollections.observableArrayList(partner.getInvoicesFiltered(String.valueOf(clients)));
             final TreeItem<Invoice> root = new RecursiveTreeItem<>(invoices, RecursiveTreeObject::getChildren);
@@ -299,8 +345,7 @@ public class InvoicesController {
         });
         content.setActions(button);
         stackPane.setVisible(true);
-        Parent parent = txtSearchPartner.getParent();
-        parent.requestFocus();
+        handleRemoveFocus();
         dialog.show();
     }
 

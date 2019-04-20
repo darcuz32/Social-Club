@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXRadioButton?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="500.0" prefWidth="685.0" styleClass="background" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ConfigController">
+   <children>
+      <Label text="Configuración" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="15.0">
+         <font>
+            <Font name="System Bold" size="36.0" />
+         </font>
+      </Label>
+      <JFXTabPane prefHeight="406.0" prefWidth="685.0" styleClass="background" AnchorPane.bottomAnchor="-2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="96.0">
+         <tabs>
+            <Tab text="Tema">
+               <content>
+                  <AnchorPane prefHeight="347.0" prefWidth="685.0" styleClass="background-config">
+                     <children>
+                        <HBox layoutX="20.0" layoutY="30.0" prefWidth="559.0" spacing="80.0" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="30.0">
+                           <children>
+                              <HBox alignment="CENTER">
+                                 <children>
+                                    <JFXRadioButton fx:id="radioBtnDarkTheme" onAction="#handleChangeTheme" styleClass="radio" text="Oscuro">
+                                       <HBox.margin>
+                                          <Insets right="50.0" />
+                                       </HBox.margin>
+                                    </JFXRadioButton>
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" height="50.0" stroke="WHITE" strokeLineJoin="ROUND" strokeType="INSIDE" styleClass="demo-dark-theme" width="50.0" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0">
+                                 <children>
+                                    <JFXRadioButton fx:id="radioBtnDefaultTheme" onAction="#handleChangeTheme" styleClass="radio" text="Default">
+                                       <HBox.margin>
+                                          <Insets right="50.0" />
+                                       </HBox.margin>
+                                    </JFXRadioButton>
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" height="50.0" stroke="WHITE" strokeLineJoin="ROUND" strokeType="INSIDE" styleClass="demo-default-theme" width="50.0" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+         </tabs>
+      </JFXTabPane>
+      <JFXButton fx:id="btnSaveConfig" onAction="#handleSaveConfig" styleClass="btn" text="Guardar" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="30.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </JFXButton>
+      <StackPane fx:id="stackPane" prefHeight="247.0" prefWidth="434.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+   </children>
+</AnchorPane>

@@ -45,6 +45,8 @@ public class AuthorizedController {
 
     public Partner partner;
 
+    public String theme;
+
     public void initialize(){
 
         JFXTreeTableColumn<Partner, String> columnId = new JFXTreeTableColumn<>("Cédula");
@@ -111,14 +113,18 @@ public class AuthorizedController {
             Parent parent = fxmlLoader.load();
             AddAuthorizedController addAuthorizedController = fxmlLoader.getController();
             addAuthorizedController.setAuthorizedController(this);
+            addAuthorizedController.setClub(club);
             addAuthorizedController.setPartner(partner);
             Scene scene = new Scene(parent);
             Stage dialog = new Stage();
             dialog.initModality(Modality.APPLICATION_MODAL);
             dialog.getIcons().add(new Image("resources/images/cs.png"));
             dialog.setScene(scene);
+            dialog.getScene().getStylesheets().clear();
+            dialog.getScene().getStylesheets().add("resources/styles/"+theme);
             dialog.setResizable(false);
             dialog.show();
+            handleRemoveFocus();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -133,9 +139,12 @@ public class AuthorizedController {
             Parent parent;
             parent = fxmlLoader.load();
             PartnersController partnersController = fxmlLoader.getController();
+            partnersController.theme = this.theme;
             partnersController.setClub(club);
             partnersController.setPrimaryStage(primaryStage);
             primaryStage.setScene(new Scene(parent, primaryStage.getScene().getWidth(), primaryStage.getScene().getHeight()));
+            primaryStage.getScene().getStylesheets().clear();
+            primaryStage.getScene().getStylesheets().add("resources/styles/"+theme);
             parent.requestFocus();
 
             partnersController.fillPartnersTable();
@@ -151,14 +160,47 @@ public class AuthorizedController {
             Parent parent;
             parent = fxmlLoader.load();
             InvoicesController invoicesController = fxmlLoader.getController();
+            invoicesController.theme = this.theme;
             invoicesController.setClub(club);
             invoicesController.setPrimaryStage(primaryStage);
             primaryStage.setScene(new Scene(parent, primaryStage.getScene().getWidth(), primaryStage.getScene().getHeight()));
+            primaryStage.getScene().getStylesheets().clear();
+            primaryStage.getScene().getStylesheets().add("resources/styles/"+theme);
             parent.requestFocus();
 
             invoicesController.fillPartnersTable();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+    }
+
+    public void handleConfig(){
+        try {
+            URL url = getClass().getClassLoader().getResource("resources/views/Config.fxml");
+            FXMLLoader fxmlLoader = new FXMLLoader(url);
+            Parent parent = fxmlLoader.load();
+            Scene scene = new Scene(parent);
+            ConfigController configController = fxmlLoader.getController();
+            configController.theme = this.theme;
+            configController.setClub(club);
+            configController.setPrimaryStage(primaryStage);
+            configController.setAuthorizedController(this);
+            Stage dialog = new Stage();
+            dialog.initModality(Modality.APPLICATION_MODAL);
+            dialog.getIcons().add(new Image("resources/images/cs.png"));
+            dialog.setScene(scene);
+            dialog.getScene().getStylesheets().clear();
+            dialog.getScene().getStylesheets().add("resources/styles/"+theme);
+            parent.requestFocus();
+            dialog.setResizable(false);
+            configController.setDialog(dialog);
+            dialog.show();
+            handleRemoveFocus();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            callExceptionDialog(e);
         }
 
     }
@@ -173,9 +215,12 @@ public class AuthorizedController {
             dialog.initModality(Modality.APPLICATION_MODAL);
             dialog.getIcons().add(new Image("resources/images/cs.png"));
             dialog.setScene(scene);
+            dialog.getScene().getStylesheets().clear();
+            dialog.getScene().getStylesheets().add("resources/styles/"+theme);
             parent.requestFocus();
             dialog.setResizable(false);
             dialog.show();
+            handleRemoveFocus();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -225,8 +270,7 @@ public class AuthorizedController {
         });
         content.setActions(button);
         stackPane.setVisible(true);
-        Parent parent = txtSearchPartner.getParent();
-        parent.requestFocus();
+        handleRemoveFocus();
         dialog.show();
     }
 

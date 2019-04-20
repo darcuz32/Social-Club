@@ -8,6 +8,12 @@
     -fx-text-fill:white !important;
 }
 
+.background-config{
+    -fx-background-color:#333333;
+    -fx-border-color:#1c1c1c;
+    -fx-text-fill:white !important;
+}
+
 .header{
     -fx-background-color:#242424;
     -fx-border-color:#1c1c1c;
@@ -121,6 +127,12 @@
 }
 
 
+.radio {
+    -jfx-selected-color: white;
+    -jfx-unselected-color: white;
+}
+
+
 /****************************************************************
 
   ScrollBar Skin
@@ -178,4 +190,37 @@
 }
 .scroll-bar:vertical:focused{
  -fx-background-color: transparent,#1c1c1c,#1c1c1c;
+}
+
+.jfx-tab-pane .headers-region {
+    -fx-background-color: #242424;
+}
+.jfx-tab-pane .tab-header-background {
+    -fx-background-color: #242424;
+}
+
+.jfx-tab-pane .tab-header-area .jfx-rippler{
+    -jfx-rippler-fill :black;
+}
+
+.jfx-tab-pane .tab-selected-line {
+    -fx-background-color: white;
+}
+
+
+/****************************************************************
+
+  Demos themes
+
+****************************************************************/
+
+
+.demo-dark-theme{
+    -fx-fill: #212121 ;
+    -fx-stroke: none;
+}
+
+.demo-default-theme{
+    -fx-fill: #CDCDCD;
+    -fx-stroke: none;
 }

@@ -1,0 +1,60 @@
+.btn{
+    -fx-background-color:white;
+    -fx-border-color:#F4F4F4;
+    -jfx-rippler-fill: #F4F4F4;
+    -fx-font-size:18px;
+    -jfx-button-type: RAISED;
+}
+
+
+.btn:hover{
+    -fx-background-color:#F4F4F4;
+    -fx-border-color:#F4F4F4;
+}
+
+.dialog-text {
+    -fx-font-size:18px;
+}
+
+.background-config{
+    -fx-background-color:white;
+}
+
+.jfx-tab-pane .headers-region {
+    -fx-background-color: white;
+}
+.jfx-tab-pane .tab-header-background {
+    -fx-background-color: white;
+}
+.jfx-tab-pane .tab-header-area .jfx-rippler{
+    -jfx-rippler-fill :#666666;
+}
+
+.jfx-tab-pane .tab-label {
+    -fx-text-fill: black;
+}
+
+.jfx-tab-pane .tab-selected-line {
+    -fx-background-color: black;
+}
+
+.radio {
+    -jfx-selected-color: black;
+    -jfx-unselected-color: black;
+}
+/****************************************************************
+
+  Demos themes
+
+****************************************************************/
+
+
+.demo-dark-theme{
+    -fx-fill: #212121 ;
+    -fx-stroke: none;
+}
+
+.demo-default-theme{
+    -fx-fill: #CDCDCD;
+    -fx-stroke: none;
+}

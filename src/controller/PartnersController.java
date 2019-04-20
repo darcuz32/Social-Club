@@ -44,6 +44,8 @@ public class PartnersController {
 
     public Stage primaryStage;
 
+    public String theme;
+
     public void initialize(){
 
         JFXTreeTableColumn<Partner, String> columnId= new JFXTreeTableColumn<>("Cédula");
@@ -102,8 +104,11 @@ public class PartnersController {
             dialog.initModality(Modality.APPLICATION_MODAL);
             dialog.getIcons().add(new Image("resources/images/cs.png"));
             dialog.setScene(scene);
+            dialog.getScene().getStylesheets().clear();
+            dialog.getScene().getStylesheets().add("resources/styles/"+theme);
             dialog.setResizable(false);
             dialog.show();
+            handleRemoveFocus();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -130,9 +135,12 @@ public class PartnersController {
             Parent parent;
             parent = fxmlLoader.load();
             AuthorizedController authorizedController = fxmlLoader.getController();
+            authorizedController.theme = this.theme;
             authorizedController.setClub(club);
             authorizedController.setPrimaryStage(primaryStage);
             primaryStage.setScene(new Scene(parent, primaryStage.getScene().getWidth(), primaryStage.getScene().getHeight()));
+            primaryStage.getScene().getStylesheets().clear();
+            primaryStage.getScene().getStylesheets().add("resources/styles/"+theme);
             parent.requestFocus();
 
             authorizedController.fillPartnersTable();
@@ -145,18 +153,50 @@ public class PartnersController {
         try {
             URL url = getClass().getClassLoader().getResource("resources/views/Invoices.fxml");
             FXMLLoader fxmlLoader = new FXMLLoader(url);
-            Parent parent;
-            parent = fxmlLoader.load();
+            Parent parent = fxmlLoader.load();
             InvoicesController invoicesController = fxmlLoader.getController();
+            invoicesController.theme = this.theme;
             invoicesController.setClub(club);
             invoicesController.setPrimaryStage(primaryStage);
             primaryStage.setScene(new Scene(parent, primaryStage.getScene().getWidth(), primaryStage.getScene().getHeight()));
+            primaryStage.getScene().getStylesheets().clear();
+            primaryStage.getScene().getStylesheets().add("resources/styles/"+theme);
             parent.requestFocus();
 
             invoicesController.fillPartnersTable();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void handleConfig(){
+        try {
+            URL url = getClass().getClassLoader().getResource("resources/views/Config.fxml");
+            FXMLLoader fxmlLoader = new FXMLLoader(url);
+            Parent parent = fxmlLoader.load();
+            Scene scene = new Scene(parent);
+            ConfigController configController = fxmlLoader.getController();
+            configController.theme = this.theme;
+            configController.setClub(club);
+            configController.setPrimaryStage(primaryStage);
+            configController.setPartnersController(this);
+            Stage dialog = new Stage();
+            dialog.initModality(Modality.APPLICATION_MODAL);
+            dialog.getIcons().add(new Image("resources/images/cs.png"));
+            dialog.setScene(scene);
+            dialog.getScene().getStylesheets().clear();
+            dialog.getScene().getStylesheets().add("resources/styles/"+theme);
+            parent.requestFocus();
+            dialog.setResizable(false);
+            configController.setDialog(dialog);
+            dialog.show();
+            handleRemoveFocus();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            callExceptionDialog(e);
+        }
+
     }
 
     public void handleAbout(){
@@ -169,9 +209,12 @@ public class PartnersController {
             dialog.initModality(Modality.APPLICATION_MODAL);
             dialog.getIcons().add(new Image("resources/images/cs.png"));
             dialog.setScene(scene);
+            dialog.getScene().getStylesheets().clear();
+            dialog.getScene().getStylesheets().add("resources/styles/"+theme);
             parent.requestFocus();
             dialog.setResizable(false);
             dialog.show();
+            handleRemoveFocus();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -209,8 +252,7 @@ public class PartnersController {
         });
         content.setActions(button);
         stackPane.setVisible(true);
-        Parent parent = txtSearchPartner.getParent();
-        parent.requestFocus();
+        handleRemoveFocus();
         dialog.show();
     }
 
@@ -222,6 +264,8 @@ public class PartnersController {
 
     public void setClub(Club club) {
         this.club = club;
+
+        fillPartnersTable();
     }
 
     public void setPrimaryStage(Stage primaryStage) {

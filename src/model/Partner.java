@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Partner extends RecursiveTreeObject<Partner> {
+public class Partner extends RecursiveTreeObject<Partner> implements java.io.Serializable  {
 
     //instance variables
     private String id;

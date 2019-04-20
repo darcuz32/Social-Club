@@ -116,8 +116,4 @@
          </VBox.margin>
       </HBox>
    </children>
-
-   <stylesheets>
-      <URL value="@../styles/MasterStyle.css" />
-   </stylesheets>
 </VBox>

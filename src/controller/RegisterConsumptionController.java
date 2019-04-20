@@ -5,7 +5,12 @@ import com.jfoenix.controls.JFXTextField;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
+import model.Club;
 import model.Partner;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 public class RegisterConsumptionController {
     @FXML
@@ -20,6 +25,8 @@ public class RegisterConsumptionController {
     public InvoicesController invoicesController;
 
     public Partner partner;
+
+    public Club club;
 
     public void initialize(){
     }
@@ -53,6 +60,25 @@ public class RegisterConsumptionController {
         }
 
         partner.addInvoice(name, concept,  Double.parseDouble(amount));
+        try {
+
+            String filename = "club.tmp";
+
+            //Saving of object in a file
+            FileOutputStream file = new FileOutputStream(filename);
+            ObjectOutputStream out = new ObjectOutputStream(file);
+
+            // Method for serialization of object
+            out.writeObject(club);
+
+            out.close();
+            file.close();
+        } catch(IOException ex) {
+            System.out.println("IOException is caught\n"+ex.getMessage());
+        }catch (Exception e){
+            System.out.println(e);
+            return;
+        }
 
         invoicesController.fillTableInvoices(name);
         invoicesController.setComboBoxValue(name);
@@ -88,5 +114,9 @@ public class RegisterConsumptionController {
             comboBoxName.getItems().add(String.valueOf(thisAuthorized));
         }
         comboBoxName.getSelectionModel().select(0);
+    }
+
+    public void setClub(Club club) {
+        this.club = club;
     }
 }

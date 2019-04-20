@@ -11,6 +11,10 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Club;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
 public class AffiliatePartnerController {
 
     @FXML
@@ -59,6 +63,20 @@ public class AffiliatePartnerController {
 
         try {
             club.affiliatePartner(id,name);
+
+            String filename = "club.tmp";
+
+            //Saving of object in a file
+            FileOutputStream file = new FileOutputStream(filename);
+            ObjectOutputStream out = new ObjectOutputStream(file);
+
+            // Method for serialization of object
+            out.writeObject(club);
+
+            out.close();
+            file.close();
+        } catch(IOException ex) {
+            System.out.println("IOException is caught\n"+ex.getMessage());
         }catch (Exception e){
             callExceptionDialog(e);
             return;
